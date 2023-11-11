@@ -92,25 +92,6 @@ ul {
 
 }
 
-/* Universal Classes */
-.highlight-primary {
-  color: var(--primary-color);
-}
-.task-card-priority-urgent {
-  background-color: var(--priority-urgent);
-}
-.task-card-priority-high {
-  background-color: var(--priority-high);
-}
-.task-card-priority-medium {
-  background-color: var(--priority-medium);
-}
-.task-card-priority-low {
-  background-color: var(--priority-low);
-}
-.task-card-priority-none {
-  background-color: var(--priority-none);
-}
 body {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -122,10 +103,6 @@ body.body-grid {
   grid-template-rows: .5fr 5fr .25fr;
 }
 
-
-
-
-
 /* Header */
 /*#region*/
 header {
@@ -136,6 +113,26 @@ header {
   align-items: center;
   padding: 1em;
 }
+
+.open-create-task-dialog-icon {
+  width: 2em;
+}
+button#open-create-task-dialog {
+  padding: 2px 10px 2px 0px;
+  border: 3px solid var(--symbol-on-primary);
+  border-radius: 10px;
+  background-color: var(--background-color);
+}
+button#open-create-task-dialog:hover {
+  background-color: var(--symbol-on-primary);
+  border-color: var(--background-color);
+  color: var(--primary-color);
+}
+button#open-create-task-dialog:hover .open-create-task-dialog-icon {
+  fill: var(--primary-color);
+}
+
+
 .header-icon-button-container {
   display: flex;
   justify-content: center;
@@ -345,23 +342,6 @@ main {
 .task-list-options-container {
   display: flex;
 }
-.create-task-icon {
-  width: 2em;
-}
-.create-task-button {
-  padding: 2px 10px 2px 0px;
-  border: 3px solid var(--symbol-on-primary);
-  border-radius: 10px;
-  background-color: var(--background-color);
-}
-.create-task-button:hover {
-  background-color: var(--symbol-on-primary);
-  border-color: var(--background-color);
-  color: var(--primary-color);
-}
-.create-task-button:hover .create-task-icon {
-  fill: var(--primary-color);
-}
 
 .task-list-title {
   font-size: 2.5rem;
@@ -513,5 +493,173 @@ footer a {
   stroke-width: var(--footer-icon-stroke-width);
   border-radius: 100px;
   box-shadow: 0px 0px 5px 3px var(--text-on-primary);
+}
+/*#endregion*/
+
+
+
+/* Base Dialog Modal*/
+/*#region*/
+.base-dialog {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 5px solid var(--symbol-on-primary);
+  border-radius: 10px;
+  min-width: 50vw;
+  min-height: 50vh;
+  padding: 0.25em 1em 1em 1em;
+  overflow: hidden;
+}
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  align-items: baseline;
+  border-bottom: 5px solid var(--primary-color);
+}
+.dialog-title {
+  font-size: 2.5rem;
+  font-weight: bolder;
+}
+.dialog-icon {
+  width: 1.5em;
+  height: 1.5em;
+  border: 3px solid var(--symbol-on-primary);
+  background-color: var(--background-color);
+  border-radius: 10px;
+}
+.dialog-icon-button:hover .dialog-close-icon{
+  fill: var(--symbol-on-primary);
+  border-color: var(--primary-color);
+}
+/*#endregion*/
+
+
+/* New Task Dialog Form */
+/*#region*/
+form.new-task-dialog-form {
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+#new-task-description {
+  resize: none;
+}
+/*#endregion*/
+
+
+
+/* Custom Select Styling */
+/*#region*/
+.custom-select {
+  cursor: pointer;
+  width: max-content;
+}
+.custom-select-head-container,
+.options-container {
+  padding: 0.2em;
+  border: 2px solid var(--symbol-on-primary);
+  min-width: 5em;
+  max-width: max-content;
+}
+.custom-select-head-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  max-height: 1rem;
+  text-wrap: nowrap;
+  background-color: var(--surface-color);
+  border-radius: 5px;
+}
+.custom-select-head-container:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.custom-select-head-container.active {
+  border-bottom: none;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+.selected-option {
+  font-weight: bolder;
+  color: black;
+}
+.custom-select-chevron {
+  fill: black;
+  width: 1em;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+.custom-select-head-container.active .custom-select-chevron {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+.options-container {
+  visibility: hidden;
+  position: absolute;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-color: var(--surface-color);
+}
+.show-list {
+  visibility: visible;
+  position: absolute;
+}
+
+/* Option-Hover */
+/*#region*/
+div.options-container div.urgent:hover{
+  background-color: var(--priority-urgent);
+  color: black;
+  font-weight: bold;
+}
+div.options-container div.high:hover{
+  background-color: var(--priority-high);
+  color: black;
+  font-weight: bold;
+}
+div.options-container div.medium:hover{
+  background-color: var(--priority-medium);
+  color: black;
+  font-weight: bold;
+}
+div.options-container div.low:hover{
+  background-color: var(--priority-low);
+  color: black;
+  font-weight: bold;
+}
+div.options-container div.none:hover{
+  background-color: var(--priority-none);
+  color: black;
+  font-weight: bold;
+}
+/*#endregion*/
+
+
+/*#endregion*/
+
+
+/* Highlights and Default Overrides */
+/*#region*/
+.highlight-primary {
+  color: var(--primary-color);
+}
+.task-card-priority-urgent {
+  background-color: var(--priority-urgent);
+}
+.task-card-priority-high {
+  background-color: var(--priority-high);
+}
+.task-card-priority-medium {
+  background-color: var(--priority-medium);
+}
+.task-card-priority-low {
+  background-color: var(--priority-low);
+}
+.task-card-priority-none {
+  background-color: var(--priority-none);
 }
 /*#endregion*/
