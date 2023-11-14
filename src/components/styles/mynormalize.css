@@ -1,5 +1,7 @@
 /* My Changes, Nolan Gajdascz*/
-
+html, :root, *, *::after, *::before {
+	box-sizing: border-box;
+}
 /* Preferred Default Font */
 @font-face {
   font-family: 'atkinson-hyper-legible';
@@ -19,7 +21,6 @@
 }
 
 :root {
-  box-sizing: border-box;
   font-size: 20px;
 	font-family: 
 		'atkinson-hyper-legible',

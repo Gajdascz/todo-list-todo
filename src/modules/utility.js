@@ -55,12 +55,12 @@ const changeSelectedBackground = (newPriority) => {
   const selectorHeader = document.querySelector('div.custom-select-head-container');
   if(selectorHeader) {
     Array.from(selectorHeader.classList).forEach((className) => {
-      if(className.startsWith('task-card-priority-')) {
+      if(className.startsWith('priority-')) {
         selectorHeader.classList.remove(className);
       }
     })
   }
-  selectorHeader.classList.add(`task-card-priority-${newPriority}`);
+  selectorHeader.classList.add(`priority-${newPriority}`);
 }
 
 
@@ -93,8 +93,8 @@ const createCustomSelectObj = ({section, options, identifier='dropdown', default
         attributes: { class: 'custom-select-head-container'},
         children: [
           { type:'div', 
-          text: defaultSelectText, 
-          attributes: { class: 'selected-option' }
+          text: `${defaultSelectText}`, 
+          attributes: { class: `selected-option ${identifier}-selected-option` }
         },
         { type: 'svg',
           attributes: { class: 'custom-select-chevron'},
@@ -118,7 +118,6 @@ const dateHelper = (infoType,infoValue) => {
   infoType = infoType.toLowerCase();
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
   if(infoType === 'day') return days[infoValue];
   if(infoType === 'month') return months[infoValue];
 
