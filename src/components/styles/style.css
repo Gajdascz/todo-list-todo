@@ -67,7 +67,9 @@ button {
 ul {
   list-style: none;
 }
-
+:disabled {
+  cursor: default;
+}
 /* Universal Variables */
 :root {
 
@@ -77,6 +79,8 @@ ul {
   --priority-medium: #ffc107;
   --priority-low: #198754;
   --priority-none: var(--primary-color);
+
+  --task-complete: #d3d3d3;
 
 
   --sidebar-logo-size: 3rem;
@@ -441,18 +445,16 @@ main {
   text-overflow: ellipsis;
   font-size: 1rem;
 }
-div.task-card-checklist > label {
-  display: flex;
-  flex-direction: row-reverse;
-  gap: .25em;
-}
+
+
+
 
 p.task-card-timestamp {
   font-size: .8rem;
   font-style: italic;
   font-weight: lighter;
 }
-.task-card-show-icon-button-container{
+.task-card-show-hide-icon-button-container{
   display: flex;
   border-top: 2px solid var(--primary-color);
 }
@@ -495,6 +497,60 @@ p.task-card-timestamp {
 .task-card-show-next-icon,
 .task-card-hide-previous-icon {
   fill: var(--symbol-on-primary);
+}
+
+
+.task-card-complete {
+  text-decoration: line-through;
+  background-color: var(--task-complete);
+}
+.marked-complete-icon {
+  fill: green;
+}
+
+button.task-card-complete-icon-button:hover .marked-complete-icon {
+  fill:  var(--primary-color);
+}
+
+.task-card-checkbox-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: .15rem;
+}
+
+.task-card-checkbox-container > input {
+  appearance: none;
+  display: inline-block; 
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
+  border: 0.1em solid black;
+  width: .8rem;
+  height: .8rem;
+  position: relative; 
+}
+
+.task-card-checkbox-container > input::before {
+  content: ""; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  line-height: 1; 
+}
+
+.task-card-checkbox-container > input:checked::before {
+  content: "✔";
+}
+.task-card-checkbox-container > input:checked {
+  background-color: green;
+}
+.task-card-subtask-checked {
+  text-decoration: line-through;
+  color: green;
 }
 /*#endregion*/
 
@@ -540,9 +596,8 @@ footer a {
   color: var(--text-color);
   border: 5px solid var(--symbol-on-primary);
   border-radius: 10px;
-  min-width: 50vw;
-  min-height: 50vh;
-  
+  min-width: min-content;
+  min-height: min-content;
   padding: 1em;
   display: flex;
   flex-direction: column;
@@ -575,52 +630,127 @@ footer a {
 /*#endregion*/
 
 
-/* New Task Dialog Form */
+/* Warning Dialog Modal */
 /*#region*/
-form.new-task-dialog-form {
+.warning-dialog-container {
+  display: flex;
+  flex-direction: column;
+  gap: .75em;
+}
+
+button.task-dialog-form-delete-button {
+  background-color: red;
+  width: 50%;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  font-weight: bold;
+}
+button.task-dialog-form-delete-button:hover {
+  background-color: black;
+  color: red;
+  border-color: red;
+}
+.warning-dialog-message {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  width: 500px;
+}
+.warning-dialog-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.warning-dialog-confirm-button {
+  background-color: red;
+  width: 25%;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  font-weight: bold;
+}
+.warning-dialog-confirm-button:hover {
+  background-color: black;
+  color: red;
+  border-color: red;
+}
+.warning-dialog-cancel-button {
+  background-color: var(--primary-color);
+  width: 25%;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  font-weight: bold;
+}
+.warning-dialog-cancel-button:hover {
+  background-color: black;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+/*#endregion*/
+
+
+.task-dialog-form-main-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5em;
+}
+
+
+/* Task Dialog Form */
+/*#region*/
+form.task-dialog-form {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: .5em;
 }
-#new-task-description {
+#task-dialog-form-description {
   resize: none;
 }
-div.new-task-due-container {
+div.task-dialog-form-due-container {
   display: flex;
   justify-content: center;
   gap: .5em;
 }
-label[for="due-date"],
-input.new-task-datepicker-input {
-  width: 100%;
-  height: 2em;
-  cursor: text;
-}
-label[for="due-time"],
-input.new-task-timepicker-input {
-  width: 100%;
-  height: 2em;
-  cursor: text;
-}
+
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator{
   cursor: pointer;
 }
 
-
-.new-task-title-text-input,
-input.new-task-datepicker-input,
-input.new-task-timepicker-input,
-textarea#new-task-description {
-border: 2px solid black;
-border-radius: 5px;
-padding: .5em;
-width: 100%;
+label[for="due-time"],
+.task-dialog-form-timepicker-input {
+  width: 100%;
+  height: 2em;
+  cursor: text;
 }
 
-label[for="new-task-description"],
-textarea#new-task-description {
+label[for="due-date"],
+.task-dialog-form-datepicker-input {
+  width: 100%;
+  height: 2em;
+  cursor: text;
+}
+
+
+
+
+.task-dialog-form-text-input,
+.task-dialog-form-description-input,
+.task-dialog-form-timepicker-input,
+.task-dialog-form-datepicker-input {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  width: 100%;
+}
+
+label[for="task-dialog-form-description"],
+textarea#task-dialog-form-description {
   width: 100%;
 }
 
@@ -632,15 +762,15 @@ div.subtask-input-container {
   justify-content: center;
 }
 label[for="subtask-input"],
-input.new-task-form-subtask-text-input {
+input.task-dialog-form-subtask-text-input {
   border: none;
   padding: 0.25em;
   width: 100%;
 }
-input.new-task-form-subtask-text-input:focus {
+input.task-dialog-form-subtask-text-input:focus {
   outline: none;
 }
-button.new-task-form-add-subtask-button {
+button.task-dialog-form-add-subtask-button {
   border-left: 2px solid black;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -648,26 +778,14 @@ button.new-task-form-add-subtask-button {
   padding: .25em;
   background-color: var(--primary-color);
 }
-button.new-task-form-add-subtask-button:hover {
+button.task-dialog-form-add-subtask-button:hover {
   background-color: var(--symbol-on-primary);
   color: var(--primary-color);
 }
-button.new-task-form-submit:hover {
-  background-color: black;
-  color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-button.new-task-form-submit {
-  background-color: var(--primary-color);
-  border: 3px solid black;
-  border-radius: 5px;
-  padding: .5em;
-  font-weight: bold;
-}
 
 
-div.new-task-form-subtask-container {
+
+div.task-dialog-form-subtask-container {
   display: flex;
   flex-direction: column;
   gap: 0.2em;
@@ -702,6 +820,22 @@ button.subtask-entry-delete-button:hover {
 button.subtask-entry-delete-button:hover + p.subtask-entry-text {
   color: red;
 }
+
+
+button.task-dialog-form-submit-button {
+  background-color: var(--primary-color);
+  width: 100%;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  font-weight: bold;
+}
+button.task-dialog-form-submit-button:hover {
+  background-color: black;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
 
 /*#endregion*/
 
@@ -823,5 +957,26 @@ div.options-container div.none:hover{
 }
 .priority-none {
   background-color: var(--priority-none);
+}
+#priority-urgent {
+  background-color: var(--priority-urgent);
+}
+#priority-high {
+  background-color: var(--priority-high);
+}
+#priority-medium {
+  background-color: var(--priority-medium);
+}
+#priority-low {
+  background-color: var(--priority-low);
+}
+#priority-none {
+  background-color: var(--priority-none);
+}
+#priority-complete {
+  background-color: var(--task-complete);
+}
+input:disabled {
+  color: black;
 }
 /*#endregion*/

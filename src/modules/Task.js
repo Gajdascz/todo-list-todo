@@ -1,6 +1,6 @@
 const VALIDPRIORITIES  = ['urgent', 'high', 'medium', 'low', 'none'];
 
-export const Task = ( {priority='none', title='', dueDate=null, dueTime=null, description=null, subtasks=null, status=false} = {}) => {
+const Task = ( {priority='none', title='', dueDate=null, dueTime=null, description=null, subtasks=null, status=false} = {}) => {
   function validatePriority(priority) {
     return VALIDPRIORITIES.includes(priority) ? priority : 'none';
   }
@@ -13,8 +13,11 @@ export const Task = ( {priority='none', title='', dueDate=null, dueTime=null, de
   let _subtasks = subtasks;
   let _status = status;
   let _groups = [];
-  const timeStamp = new Date().toUTCString().replace('GMT','UTC');
-  const taskID = `${title.charAt(0)}${priority.charAt(0)}${title.charAt(-1)}-${Date.now()+(Date.now()*Math.round(Math.random()*100)).toString(36)}`
+  const toggleStatus = () => {
+    _status = !_status;
+  }
+  const timestamp = new Date().toUTCString().replace('GMT','UTC');
+  const taskID = `${title.charAt(0)}${priority.charAt(0)}${title.slice(-1)}-${(Date.now()+(Date.now()*Math.round(Math.random()*100))).toString(36)}`.toUpperCase()
   const userID = 0;
   return {
     get priority() { return _priority; },
@@ -30,10 +33,12 @@ export const Task = ( {priority='none', title='', dueDate=null, dueTime=null, de
     get subtasks() { return _subtasks; },
     set subtasks(newSubtasks) { (_subtasks = newSubtasks); },
     get status() { return _status; },
-    set status(newStatus) { (_status = newStatus); },
-    get timeStamp() { return timeStamp; },
+    get timestamp() { return timestamp; },
     get groups() { return _groups; },
     get taskID() { return taskID; },
-    get userID() { return userID; }
+    get userID() { return userID; },
+    toggleStatus
   };
 };
+
+export default Task;

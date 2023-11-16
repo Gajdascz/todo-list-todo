@@ -64,7 +64,9 @@ const changeSelectedBackground = (newPriority) => {
 }
 
 
-const createCustomSelectObj = ({section, options, identifier='dropdown', defaultSelectText = 'Select'}, menuIconPath=CHEVRONPATH) => {
+const createCustomSelectObj = ({section, options, value=null, identifier='dropdown', defaultSelectText=null}, menuIconPath=CHEVRONPATH) => {
+  let priorityClass;
+  if(value) priorityClass = `priority-${value}`  
   const optionsObjArray = [];
   options.forEach(option => {
     optionsObjArray.push({  type: 'div', 
@@ -90,11 +92,11 @@ const createCustomSelectObj = ({section, options, identifier='dropdown', default
     ]},
     children: [
       { type: 'div',
-        attributes: { class: 'custom-select-head-container'},
+        attributes: { class: `custom-select-head-container ${priorityClass}`},
         children: [
           { type:'div', 
-          text: `${defaultSelectText}`, 
-          attributes: { class: `selected-option ${identifier}-selected-option` }
+          text: defaultSelectText ? defaultSelectText : 'Select', 
+          attributes: { class: `selected-option ${identifier}-selected-option` },
         },
         { type: 'svg',
           attributes: { class: 'custom-select-chevron'},

@@ -1,85 +1,121 @@
 import { buildElementTree, createCustomSelectObj } from '../utility';
 import { buildBaseDialogElement } from './buildBaseDialog';
-import { processTaskFormData } from '../processing/processNewTaskFormData'
+import { processTaskFormData } from '../processing/processTaskFormData'
+import { findUserTask } from '../processing/taskGroupManager';
+import { buildWarningDialog } from './buildWarningDialog'
 
-import { buildTaskCard } from './buildTaskCard';
-import { renderTaskCard } from '../render';
-
-export const buildTaskDialogForm = (type, title) => {
-  const newTaskDialog = buildBaseDialogElement(title);
-  const newTaskForm = buildTaskForm(type);
-  newTaskDialog.append(newTaskForm);
-  return newTaskDialog
+export const buildTaskDialogForm = (type, title, taskID) => {
+  const taskDialog = buildBaseDialogElement(title);
+  if(taskID) {
+    const task = findUserTask(taskID);
+    const taskForm = buildTaskForm(type, task);
+    taskDialog.append(taskForm);
+    return taskDialog;
+  }
+    const taskForm = buildTaskForm(type);
+    taskDialog.append(taskForm);
+    return taskDialog;
 }
 
-const buildTaskForm = (type) => {
-  return buildElementTree(
-    { type: 'form', 
-      attributes: {class: `${type}-dialog-form`}, 
-      children: [
-        createTaskPriorityCustomSelectObj(type),
-        createTaskTitleObj(type),
-        createTaskDueObj(type),
-        createTaskDescriptionObj(type),
-        createSubTaskInputObj(type),
-        createSubTaskContainerObj(type),
-        createTaskSubmitButtonObj(type),
-      ]
-    }
-  );
+const buildTaskForm = (type, task=null) => {
+  console.log(task);
+  if(!task){
+    return buildElementTree(
+      { type: 'form', 
+        attributes: {class: `task-dialog-form ${type}-dialog-form`}, 
+        children: [
+          createTaskPriorityCustomSelectObj(),
+          createTaskTitleObj(),
+          createTaskDueObj(),
+          createTaskDescriptionObj(),
+          createSubTaskInputObj(),
+          createSubTaskContainerObj(),
+          createTaskSubmitButtonObj(type),
+        ]
+      }
+    );
+  } if(task) {
+      return buildElementTree(
+      { type: 'form', 
+        attributes: {class: `task-dialog-form ${type}-dialog-form`}, 
+        children: [
+          createTaskPriorityCustomSelectObj(task.priority),
+          createTaskTitleObj(task.title),
+          createTaskDueObj(task.dueDate, task.dueTime),
+          createTaskDescriptionObj(task.description),
+          createSubTaskInputObj(),
+          createSubTaskContainerObj(task.subtasks),
+          createMainButtonContainerObj(type, task.taskID),
+        ]
+      }
+    );
+  }
 };
 
-const createTaskPriorityCustomSelectObj = (type) => {
+const createMainButtonContainerObj = (type, taskID) => {
+  const buttons = [];
+  buttons.push(createTaskSubmitButtonObj(type, taskID));
+  if(type === 'edit-task') {
+    buttons.push(createTaskDeleteButtonObj(taskID))
+  }
+  return {
+    type: 'div',
+    attributes: {class: 'task-dialog-form-main-button-container'},
+    children: buttons,
+  }
+}
+
+
+const createTaskPriorityCustomSelectObj = (value=null) => {
+  let valueText;
+  if(value) valueText = value.slice(0,1).toUpperCase() + value.slice(1);
   return  createCustomSelectObj({
-            section: `${type}-form`,
-            identifier: `${type}-priority`,
-            defaultSelectText: 'Priority',
-            options: ['Urgent', 'High', 'Medium', 'Low', 'None']  
+            section: `task-dialog-form`,
+            identifier: `task-dialog-form-priority`,
+            defaultSelectText: valueText ? valueText : 'Priority',
+            options: ['Urgent', 'High', 'Medium', 'Low', 'None'],
+            value  
           }  
   )
 };
 
-const createTaskDescriptionObj = (type) => {
+const createTaskDescriptionObj = ( value=null) => {
   return createTextAreaObj({
-    id: `${type}-description`,
-    name: `${type}-description`,
-    form: `${type}-description`,
+    id: `task-dialog-form-description`,
+    name: `task-dialog-form-description`,
     rows: 5,
     cols: 30,
     placeholder: `Task Description`,
+    value,
   })
 };
 
-const createTaskTitleObj = (type) => {
+const createTaskTitleObj = (value=null) => {
   return createTextInputObj({
-    id: 'title',
-    name: 'title',
-    form: `${type}`,
+    id: 'task-dialog-form-title',
     placeholder: 'Task',
+    identifier: 'title',
     required: true,
+    value
   })
 };
 
-const createTaskDueObj = (type) => {
-  const TODAY = new Date();
-  const month = TODAY.getMonth();
-  const year = TODAY.getFullYear();
-  const dayOfMonth = TODAY.getDate();
-  let today = `${year}-${month}-${dayOfMonth}`;
+const createTaskDueObj = (dueDate=null, dueTime=null) => {
+  if(dueDate) dueDate = `${dueDate.slice(-4)}-${dueDate.slice(0,2)}-${dueDate.slice(3,5)}`;
+  if(dueTime) dueTime = `${dueTime.slice(0,2)}:${dueTime.slice(3,5)}`;
   const taskDueDateObj = createFormDatePickerObj({
                           id: 'due-date',
                           name: 'due-date',
-                          form: `${type}`,
-                          min: today,
+                          value: dueDate
                         });
   const taskDueTimeObj =  createFormTimePickerObj({
                             id: 'due-time',
                             name: 'due-time',
-                            form: `${type}`,
+                            value: dueTime
   });
 
   const taskDueContainer = { type: 'div',
-                                attributes: {class: `${type}-due-container`},
+                                attributes: {class: `task-dialog-form-due-container`},
                                 children: [
                                   taskDueDateObj,
                                   taskDueTimeObj
@@ -88,15 +124,14 @@ const createTaskDueObj = (type) => {
   return taskDueContainer
 };
 
-const createFormTimePickerObj = ({id,name,form,value='',min='',max='',required=false}) => {
-  if(!name) name = id;
+const createFormTimePickerObj = ({id,value='',min='',max='',required=false}) => {
   return { type: 'label', 
             attributes: {for: id},
             children: [
               { type: 'input',
                 attributes: { type: 'time', 
                               id, 
-                              class: `${form}-timepicker-input ${form}-timepicker-${name}-input`,
+                              class: `task-dialog-form-timepicker-input`,
                               value,
                               min,
                               max
@@ -106,15 +141,14 @@ const createFormTimePickerObj = ({id,name,form,value='',min='',max='',required=f
          }
 };
 
-const createFormDatePickerObj = ({id,name,form,value='',min='',max='',required=false}) => {
-  if(!name) name = id;
+const createFormDatePickerObj = ({id,value='',min='',max='',required=false}) => {
   return { type: 'label', 
             attributes: {for: id},
             children: [
               { type: 'input',
                 attributes: { type: 'date', 
                               id, 
-                              class: `${form}-datepicker-input ${form}-datepicker-${name}-input`,
+                              class: `task-dialog-form-datepicker-input`,
                               value,
                               min,
                               max
@@ -124,32 +158,33 @@ const createFormDatePickerObj = ({id,name,form,value='',min='',max='',required=f
          }
 };
 
-const createTextInputObj = ({id, form, name=null, placeholder=null, required=false}) => {
-  if(!name) name = id;
+const createTextInputObj = ({id, identifier, value=null, placeholder=null, required=false}) => {
   return { type: 'label', 
            attributes: {for: id}, 
             children: [
               { type: 'input', 
                 attributes: { type: 'text', 
                               id: id, 
-                              class: `${form}-text-input ${form}-${name}-text-input`, 
+                              class: `task-dialog-form-text-input task-dialog-form-${identifier}-input`, 
                               placeholder,
-                              required
+                              required,
+                              value: value ? value : ''
                             }
               }
             ]
           }
 } ;
 
-const createTextAreaObj = ({id, form, name, rows, cols, placeholder=''}) => {
+const createTextAreaObj = ({id, name, rows, cols, placeholder='', value=null}) => {
   if(!name) name = id;
   return { type: 'label', 
-           attributes: {for: id}, 
+           attributes: {for: id},
             children: [
-              { type: 'textarea', 
+              { type: 'textarea',
+                text: value,  
                 attributes: { type: 'text', 
                               id: id, 
-                              class: `${form}-textarea-input ${form}-textarea-${name}-input`,
+                              class: `task-dialog-form-description-input`,
                               rows,
                               cols,
                               placeholder
@@ -159,23 +194,26 @@ const createTextAreaObj = ({id, form, name, rows, cols, placeholder=''}) => {
           }
 };
 
-const createSubTaskInputObj = (type) => {
+const createSubTaskInputObj = () => {
   return { type: 'div', 
            attributes: {class:'subtask-input-container'},
            children: [
             { type: 'label', attributes: { for: 'subtask-input'},
               children: [
                 { type: 'input',
-                attributes: { type: 'text', class: `${type}-form-subtask-text-input`, id: 'subtask-input', placeholder: 'Subtask', maxlength: '18'},
+                attributes: { type: 'text', class: `task-dialog-form-subtask-text-input`, id: 'subtask-input', placeholder: 'Subtask', maxlength: '18'},
               },
               ]},
-            { type: 'button', text: '+', attributes: {type:'button', class: `${type}-form-add-subtask-button`},
+            { type: 'button', text: '+', attributes: {type:'button', class: `task-dialog-form-add-subtask-button`},
               listeners: { 'click': [
                 (e) => {
-                  const textInput = document.querySelector(`input.${type}-form-subtask-text-input`);
+                  const subtaskContainer = document.querySelector(`.task-dialog-form-subtask-container`);
+                  const textInput = document.querySelector(`input.task-dialog-form-subtask-text-input`);
                   let text = textInput.value.trim()
+                  let subtaskEntry;
                   if(text !== ''){
-                    createSubTaskEntry(text, type);
+                    subtaskEntry = createSubtaskEntryObj(text);
+                    subtaskContainer.append(buildElementTree(subtaskEntry));
                   }
                   textInput.value = '';
                 }
@@ -183,54 +221,51 @@ const createSubTaskInputObj = (type) => {
            ]}
 };
 
-const createSubTaskEntry = (subtask, type) => {
-  const subtaskContainer = document.querySelector(`.${type}-form-subtask-container`)
-  subtaskContainer.append(buildElementTree(
-    { type: 'div', attributes: {class:'subtask-entry-container'},
-      children: [
-        { type: 'button', text:'-', attributes: {type: 'button', class: 'subtask-entry-delete-button'},
-          listeners: {
-            'click' : [
-              function (e) {
-                this.parentElement.remove();
-              }
+const createSubtaskEntryObj = (subtask) => {
+  return {  type: 'div', attributes: {class:'subtask-entry-container'},
+            children: [
+              { type: 'button', text:'-', attributes: {type: 'button', class: 'subtask-entry-delete-button'},
+                listeners: {
+                  'click' : [
+                    function (e) {
+                      this.parentElement.remove();
+                    }
+                  ]
+                }
+              },
+              { type: 'p', text: subtask, attributes: {class: `task-dialog-form-subtask-entry-text`}}
             ]
-          }},
-        { type: 'p', text: subtask, attributes: {class: `${type}-subtask-entry-text`}}
-      ]}
-  ));
-};
+         }
+  };
 
-const createSubTaskContainerObj = () => {
+const createSubTaskContainerObj = (value=null) => {
+  const subtasks = [];
+  if(value) { 
+    value.forEach(subtask => {
+      subtasks.push(createSubtaskEntryObj(subtask))
+    })
+  }
   return { type:'div', 
-           attributes: {class: 'new-task-form-subtask-container'}
+           attributes: {class: 'task-dialog-form-subtask-container'},
+           children: subtasks
           }
 };
 
-const createTaskSubmitButtonObj = (type) => {
+const createTaskSubmitButtonObj = (type, taskID=null) => {
   return { type: 'button',
            text: 'Submit',
            attributes: {  type: 'submit', 
-                          class:`${type}-form-button ${type}-form-submit`, 
-                          id: `${type}-submit`,
+                          class:`task-dialog-form-submit-button`, 
+                          id: `task-dialog-form-submit-${type}`,
                        },
            listeners: {
             'click': [
-              (e) => { 
+              function (e) { 
                 e.preventDefault();
-                const fields = { priority:    `div.${type}-priority-selected-option`,
-                                 title:       `input.${type}-title-text-input`,
-                                 dueDate:     `input.${type}-datepicker-due-date-input`,
-                                 dueTime:     `input.${type}-timepicker-due-time-input`,
-                                 description: `textarea.${type}-description-textarea-input`,
-                                 subtasks:    [`p.${type}-subtask-entry-text`]
-                               };
-                               console.log(fields.subtasks);
-                const newTask = processTaskFormData(parseFormData(fields));
-                const newTaskCard = buildTaskCard(newTask);
-                renderTaskCard(newTaskCard)
-                const newTaskForm = document.querySelector('form.new-task-dialog-form');
-                newTaskForm.reset();
+                let isNew = type === 'new-task' ? true : false;
+                processTaskFormData(isNew, taskID);
+                const form = this.closest('form');
+                form.reset();
                 document.querySelector('button.dialog-close-icon-button').click();
                 
               }
@@ -239,28 +274,26 @@ const createTaskSubmitButtonObj = (type) => {
          }
 };
 
-const parseFormData = (fields) => {
-  const data = {};
-  for(const [key,value] of Object.entries(fields)) {
-    if(Array.isArray(value)) {
-      if(value.length === 0) {
-        data[key] = null;
-      } else {
-        const valueArray = [];
-        value.forEach(element => {
-          let valuesNodeList = document.querySelectorAll(element);
-          valuesNodeList.forEach(node => {
-            valueArray.push(node.textContent.trim())
-          })
-        })
-        data[key] = valueArray; 
-      }
-    } 
-    else {
-        let element = document.querySelector(value);
-        if(!element) { data[key] = null}
-        else data[key] = (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') ? element.value.trim() : element.textContent.trim();
-    }
-  }
-  return data
+const createTaskDeleteButtonObj = (taskID) => {
+  return { type: 'button',
+           text: 'Delete',
+           attributes: {  type: 'button', 
+                          class:`task-dialog-form-delete-button`, 
+                          id: `task-dialog-form-delete`,
+                       },
+           listeners: {
+            'click': [
+              function (e) { 
+                console.log(taskID);
+                const warningDialog = buildWarningDialog('Are you sure you want to delete this task? This action is irreversible.', taskID);
+                document.body.append(warningDialog);
+                warningDialog.showModal();
+                document.querySelector('button.dialog-close-icon-button').click();
+                
+              }
+            ] 
+           }
+         }
 };
+
+
