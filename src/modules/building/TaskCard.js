@@ -1,10 +1,13 @@
-import { buildElementTree } from "../utility";
-import { findUserTask } from "../processing/taskGroupManager";
-import * as taskObjBuilder from "./taskObjectDOMBuilders";
+import { buildElementTree, eventHandler } from "../utility";
+import userStorage from "../processing/userStorage";
+import { renderEditTaskDialogForm } from "../render";
+import * as taskObjBuilder from "./taskObjDOMBuilders";
 
 
 const TaskCard = (task) => {
-    const taskCard = taskObjBuilder.taskCardObj();
+
+    /* Create Task Card Objects and Build Task Card Element */
+    const taskCard = taskObjBuilder.taskCardObj(task.taskID);
     taskCard.children = [
       taskObjBuilder.taskPriorityIndicatorObj(task.priority, 'task-card', 'div'),
       taskObjBuilder.taskHeaderObj(task.title, 'task-card', 'h1',),
@@ -14,76 +17,76 @@ const TaskCard = (task) => {
       taskObjBuilder.taskTimestampObj(task.timestamp, 'task-card'),
       taskObjBuilder.taskShowHideIconBtnsObj('task-card')
     ]
+
+    /* HTML Task Card DOM element/structure and reference ID*/
     const taskCardElement = buildElementTree(taskCard);
     const taskCardID = task.taskID;
 
 
+
+
+    /* Methods */
+    //#region
+    
+    /* Helper - Private */
     const getCardElement = (selector) => taskCardElement.querySelector(selector);
-    const createAccessor = (selector, property) => ({
-      get: () => getCardElement(selector)[property],
-      set: (value) => { getCardElement(selector)[property] = value }
-    });
-    /* Getter and Setter Methods */
-    //#region 
-    const { get: getPriority, set: setPriority } = createAccessor('.task-card-priority-indicator', 'id');
-    const { get: getTitle, set: setTitle } = createAccessor('.task-card-title', 'textContent');
-    const { get: getDue, set: setDue } = createAccessor('.task-card-due', 'textContent');
-    const { get: getDescription, set: setDescription } = createAccessor('.task-card-description', 'textContent');
-    
-    const getChecklistSubtasks = () => {
-      const checklistSubtasks = taskCardElement.querySelectorAll('.task-card-checklist .task-card-checkbox-container');
-      return Array.from(checklistSubtasks).map(subtask => {
-        const checkbox = subtask.querySelector('input[type="checkbox"]');
-        const subtaskText = subtask.textContent.trim();
-        const isChecked = checkbox.checked;
-        return { subtaskText, isChecked };
-      });
+    const setPriority = (newPriority) => {
+      const element = getCardElement('.task-card-priority-indicator');
+      if(element) element.id = newPriority;
     };
-    const setChecklistSubtasks = (newSubtasks) => {
+    const setTitle = (newTitle) => {
+      const element = getCardElement('.task-card-title');
+      if(element) element.textContent = newTitle;
+    };
+    const setDescription = (newDescription) => {
+      const element = getCardElement('.task-card-description');
+      if(element) element.textContent = newDescription;
+    };
+    const setDue = (date, time) => {
+      const due = getCardElement('.task-card-due')
+      if(due) due.remove();
+      const header = getCardElement('.task-card-header')
+      header.after(buildElementTree(taskObjBuilder.taskDueObj(date, time)))
+    };
+    const setChecklistSubtasks = (subtasks,taskID) => {
       const checklist = taskCardElement.querySelector('.task-card-checklist');
-      checklist.textContent = '';
-      newSubtasks.forEach(subtask => {
-        checklist.append(buildElementTree(taskObjBuilder.createSubtaskObj(subtask)));
-      })
+      if(checklist) checklist.remove();
+      const timestamp = getCardElement('.task-card-timestamp');
+      timestamp.before(buildElementTree(taskObjBuilder.taskChecklistObj(subtasks, taskID, 'task-card')))
     };
 
-    const getTimestamp = () => getCardElement('.task-card-timestamp').textContent;
-    const getCardID = () => taskCardID;
-    const getStatus = () => { taskCardElement.classList.contains('task-card-complete')}
-    
-
+    /* Public - Exposed*/
+    const toggleStatus = () => {
+      updateUIOnStatusChange();
+      userStorage.get(taskCardID).task.toggleStatus();
+    };
     const updateUIOnStatusChange = () => {
       taskCardElement.classList.toggle('task-card-complete');
       getCardElement('.task-card-priority-indicator').classList.toggle('hide');
       getCardElement('.task-card-complete-icon').classList.toggle('marked-complete-icon');
       getCardElement('.task-card-edit-icon-button').classList.toggle('hide');
       taskCardElement.querySelectorAll('input[type="checkbox"').forEach(input => input.toggleAttribute('disabled'));
-    }
-
-    const setStatus = () => {
-      updateUIOnStatusChange();
-      findUserTask(taskCardID).toggleStatus();
-    }
+    };
+    const updateUIOnEditSubmit = (task) => {
+      setPriority(task.priority);
+      setTitle(task.title);
+      setDue(task.dueDate, task.dueTime);
+      setDescription(task.description);
+      setChecklistSubtasks(task.subtasks, task.taskID);
+    };
+    const deleteCard = () => taskCardElement.remove();
     //#endregion
     
-   taskObjBuilder.taskEventHandler(taskCardElement, '.task-card-complete-icon-button', 'click', setStatus);
+    /* Event Handler Assignment */
+    eventHandler(taskCardElement, '.task-card-complete-icon-button', 'click', toggleStatus);
+    eventHandler(taskCardElement, '.task-card-edit-icon-button', 'click', renderEditTaskDialogForm, task);
 
     return {
       element: taskCardElement,
-      getPriority,
-      setPriority,
-      getTitle,
-      setTitle,
-      getDue,
-      setDue,
-      getDescription,
-      setDescription,
-      getChecklistSubtasks,
-      setChecklistSubtasks,
-      getStatus,
-      setStatus,
-      getTimestamp,
-      getCardID
+      deleteCard,
+      updateUIOnEditSubmit,
+      toggleStatus,
+      get taskID() {return taskCardID },
     }
 }
 

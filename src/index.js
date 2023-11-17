@@ -1,6 +1,6 @@
 import './components/styles/mynormalize.css';
 import './components/styles/style.css';
-import { addUserTask } from './modules/processing/taskGroupManager'
+import userStorage from './modules/processing/userStorage'
 
 import { renderTaskCard, renderNewTaskDialogForm } from './modules/render';
 
@@ -14,8 +14,8 @@ let testTask = Task(
   {
     priority: 'urgent',
     title: 'TEST TASK',
-    dueDate: '08/01/2001',
-    dueTime: '00:30 UTC',
+    dueDate: '1876-01-20',
+    dueTime: '00:30',
     description: 'BAHAHAAHHAHAHAHAHAHAHAAHHAAHAHAHAHA',
     subtasks: ['Ba','HA','HA','BAAAAA']
   }
@@ -24,17 +24,24 @@ let testTask2 = Task(
   {
     priority: 'high',
     title: 'TEST TASK 2',
-    dueDate: '09/01/200122',
+    dueDate: '2022-06-27',
     dueTime: '',
     description: 'AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH',
     subtasks: ['AH','HHHHHH','HHHHHHHHhh','HHHHHHhh']
   }
   ) 
 
-addUserTask(testTask);
-addUserTask(testTask2);
-renderTaskCard(TaskCard(testTask), 'div.task-card-container')
-renderTaskCard(TaskCard(testTask2), 'div.task-card-container')
+
+  let testTaskCard = TaskCard(testTask);
+  let testTask2Card = TaskCard(testTask2);
+
+
+  userStorage.store(testTask.taskID, testTask, testTaskCard);
+  userStorage.store(testTask2.taskID, testTask2, testTask2Card);
+
+
+  renderTaskCard(testTaskCard);
+  renderTaskCard(testTask2Card);
 
 newTaskBtn.addEventListener(('click'), (e) => {
   renderNewTaskDialogForm();

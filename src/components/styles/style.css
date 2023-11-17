@@ -943,39 +943,33 @@ div.options-container div.none:hover{
 .hide {
   display: none;
 }
+
+#urgent,
 .priority-urgent {
   background-color: var(--priority-urgent);
 }
+#high,
 .priority-high {
   background-color: var(--priority-high);
 }
+#medium,
 .priority-medium {
   background-color: var(--priority-medium);
 }
+#low,
 .priority-low {
   background-color: var(--priority-low);
 }
+#none,
 .priority-none {
   background-color: var(--priority-none);
 }
-#priority-urgent {
-  background-color: var(--priority-urgent);
-}
-#priority-high {
-  background-color: var(--priority-high);
-}
-#priority-medium {
-  background-color: var(--priority-medium);
-}
-#priority-low {
-  background-color: var(--priority-low);
-}
-#priority-none {
-  background-color: var(--priority-none);
-}
-#priority-complete {
+#complete,
+.priority-complete {
   background-color: var(--task-complete);
 }
+
+
 input:disabled {
   color: black;
 }

@@ -15,7 +15,7 @@ const doubleChevronUpPath = "M7.41,18.41L6,17L12,11L18,17L16.59,18.41L12,13.83L7
 const taskPriorityIndicatorObj = (priority, context='task-card', elementTag='div') => {
   return {  type: elementTag, 
             attributes: { class:`${context}-priority-indicator`, 
-                          id: `priority-${priority}`
+                          id: `${priority}`
                         } 
          };
 };
@@ -63,7 +63,7 @@ const taskCompleteIconBtnObj = (path=circleCheckMarkPath, context='task-card') =
 const taskDueObj = (dueDate, dueTime, context='task-card', elementTag='p') => {
   if(dueDate && dueTime){
     return { type: elementTag, 
-             text: `${dueDate} by ${dueTime}`, 
+             text: `${dueDate} by ${dueTime} UTC`, 
              attributes: { class: `${context}-due` } 
            };
   } 
@@ -210,19 +210,12 @@ const taskShowHideIconBtnsObj = (context='task-card', hidePrevPath=chevronUpPath
     ] 
   };
 };
-
-
-const taskCardObj = () => {
+const taskCardObj = (taskID) => {
   return {
     type: 'div',
-    attributes: { class: 'task-card' }
+    attributes: { class: 'task-card', 'data-taskid': taskID }
   }
 };
-
-const taskEventHandler = (element, selector, ev, fn) => {
-  const btn = element.querySelector(selector);
-  btn.addEventListener( (`${ev}`), (e) => { fn() } );
-}
 //#endregion
 
 
@@ -240,5 +233,4 @@ export {
   taskShowHideIconBtnsObj,
   createSubtaskObj,
   taskCardObj,
-  taskEventHandler
 }

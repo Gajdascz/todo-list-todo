@@ -28,10 +28,22 @@ function buildElementTree({type, attributes={}, text=null, children=[], nameSpac
     });
   }
   return element;
+};
+
+
+const eventHandler = (element, selector, ev, fn, args=null) => {
+  const eventHandler = element.querySelector(selector);
+  const argsHandler = (e) => {
+    if(Array.isArray(args)) {
+      fn(...args, e);
+    } else if (args) {
+      fn(args, e)
+    } else {
+      fn(e)
+    }
+  }
+  eventHandler.addEventListener(ev,argsHandler);
 }
-
-
-
 const buildIconButtonObj = ({iconPath, text=null, purpose='fun', type='button', viewBox="0 0 24 24", section=null, listeners={}} = {}) => {
   const baseClass = section ? `${section}-icon-button ${section}-${purpose}-icon-button` : `${purpose}-icon-button`;
   const svgClass = section ? `${section}-icon ${section}-${purpose}-icon` : `${purpose}-icon`;
@@ -62,7 +74,6 @@ const changeSelectedBackground = (newPriority) => {
   }
   selectorHeader.classList.add(`priority-${newPriority}`);
 }
-
 
 const createCustomSelectObj = ({section, options, value=null, identifier='dropdown', defaultSelectText=null}, menuIconPath=CHEVRONPATH) => {
   let priorityClass;
@@ -127,4 +138,10 @@ const dateHelper = (infoType,infoValue) => {
 
 
 
-export { SVGNS, buildElementTree, buildIconButtonObj, createCustomSelectObj, dateHelper };
+export { SVGNS, 
+         buildElementTree,
+         eventHandler, 
+         buildIconButtonObj, 
+         createCustomSelectObj, 
+         dateHelper 
+      };

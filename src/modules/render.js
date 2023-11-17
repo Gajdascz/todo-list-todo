@@ -1,5 +1,5 @@
-import { buildTaskDialogForm } from "./building/buildTaskDialogForm";
-
+import TaskDialogForm from "./building/TaskDialogForm";
+import { buildWarningDialog } from './building/buildWarningDialog';
 
 const taskCardContainer = ('div.task-card-container')
 
@@ -10,19 +10,26 @@ const renderTaskCard = (taskCard, location=taskCardContainer) => {
 
 
 const renderNewTaskDialogForm = () => {
-  const newTaskDialogForm = buildTaskDialogForm('new-task', 'New Task');
-  document.body.append(newTaskDialogForm);
-  newTaskDialogForm.showModal();
+  const newTaskDialogForm = TaskDialogForm('new');
+  document.body.append(newTaskDialogForm.element);
+  newTaskDialogForm.element.showModal();
 }
 
-const renderEditTaskDialogForm = (taskID=null) => {
-  const editTaskDialogForm = buildTaskDialogForm('edit-task', 'Edit Task', taskID);
-  document.body.append(editTaskDialogForm);
-  editTaskDialogForm.showModal();
+const renderEditTaskDialogForm = (task) => {
+  const editTaskDialogForm = TaskDialogForm('edit', task);
+  document.body.append(editTaskDialogForm.element);
+  editTaskDialogForm.element.showModal();
+}
+
+const renderDeleteWarningDialog = (task) => {
+  const deleteWarningDialog = buildWarningDialog('Are you sure you want to delete this task? This action is irreversible.', task.taskID);
+  document.body.append(deleteWarningDialog);
+  deleteWarningDialog.showModal()
 }
 
 
 export {  renderTaskCard, 
           renderNewTaskDialogForm,
-          renderEditTaskDialogForm
+          renderEditTaskDialogForm,
+          renderDeleteWarningDialog
        }

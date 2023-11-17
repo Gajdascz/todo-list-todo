@@ -1,5 +1,5 @@
 import { renderTaskCard } from '../render';
-import { addUserTask, findUserTask } from './taskGroupManager';
+import userStorage from './userStorage';
 
 import Task from '../Task'
 import TaskCard from '../building/TaskCard';
@@ -35,15 +35,17 @@ const parseFormData = () => {
     else {
         let element = document.querySelector(value);
         if(!element) { data[key] = null}
-        else data[key] = (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') ? element.value.trim() : element.textContent.trim();
-    }
+        else {
+          data[key] = (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') ? element.value.trim() : element.textContent.trim();
+        }
+      }
   }
   return data
 };
 
 
-function processTaskFormData(isNew=true, taskID=null) {
-  if(isNew){
+function processTaskFormData(taskID=null) {
+  if(!taskID){
     const formData = parseFormData();
     const newTask = Task(
       {
@@ -55,19 +57,25 @@ function processTaskFormData(isNew=true, taskID=null) {
         subtasks:    formData.subtasks
       }
     );
-    addUserTask(newTask);
-    renderTaskCard(buildTaskCard(newTask));
+    const newTaskCard = TaskCard(newTask);
+    userStorage.store(newTask.taskID, {newTask, newTaskCard});
+    renderTaskCard(newTaskCard);
   } else {
     const formData = parseFormData();
-    const task = findUserTask(taskID);
+    const task = userStorage.get(taskID).task;
+    console.log(userStorage.get(taskID).task)
+    console.log(userStorage.get(taskID).card)
     task.priority = formData.priority.toLowerCase();
     task.title = formData.title;
     task.dueDate = formData.dueDate;
     task.dueTime = formData.dueTime;
     task.description = formData.description;
     task.subtasks = formData.subtasks;
-    updateTaskCard(document.querySelector(`[data-taskid="${task.taskID}"]`), task);
+    const taskCard = userStorage.get(taskID).card;
+    console.log(task)
+    console.log(taskCard);
+    taskCard.updateUIOnEditSubmit(task);
   }
 };
 
-export { processTaskFormData }
+export { processTaskFormData };

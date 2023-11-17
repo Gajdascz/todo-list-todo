@@ -1,6 +1,6 @@
 import { buildBaseDialogElement } from "./buildBaseDialog";
 import { buildElementTree } from "../utility";
-import { removeUserTask } from "../processing/taskGroupManager";
+import userStorage from "../processing/userStorage";
 
 export const buildWarningDialog = (warningMessage=null, taskID=null) => {
   const baseDialog =  buildBaseDialogElement('Warning!');
@@ -17,10 +17,12 @@ export const buildWarningDialog = (warningMessage=null, taskID=null) => {
     listeners: {
       'click' : [
         function (e) {
-          removeUserTask(taskID);
-          document.querySelector(`div[data-taskid="${taskID}"]`).remove();
-          document.querySelector('button.dialog-close-icon-button').click();
-         
+          userStorage.get(taskID).card.deleteCard();
+          userStorage.remove(taskID)
+          document.querySelectorAll('dialog').forEach(dialog => {
+            dialog.close();
+            dialog.remove();
+          })
         }
       ]
     }
@@ -32,7 +34,9 @@ export const buildWarningDialog = (warningMessage=null, taskID=null) => {
     listeners: {
       'click' : [
         function (e) {
-          document.querySelector('button.dialog-close-icon-button').click();
+          const warningDialog = this.closest('dialog');
+          warningDialog.close();
+          warningDialog.remove();
         }
       ]
     }
