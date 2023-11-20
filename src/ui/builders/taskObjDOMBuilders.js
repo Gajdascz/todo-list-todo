@@ -1,4 +1,4 @@
-import { buildIconButtonObj } from "../utility";
+import { buildIconButtonObj } from "../../logic/utility/domHelperFunctions";
 
 /* Icon Path Defaults */
 //#region

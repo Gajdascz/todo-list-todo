@@ -1,4 +1,4 @@
-import { buildElementTree, createCustomSelectObj } from '../utility';
+import { buildElementTree, createCustomSelectObj } from '../../logic/utility/domHelperFunctions';
 
 
 const taskFormObj = (type, formType='dialog') => {

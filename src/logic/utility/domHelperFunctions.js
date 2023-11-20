@@ -127,14 +127,6 @@ const createCustomSelectObj = ({section, options, value=null, identifier='dropdo
 }
 
 
-const dateHelper = (infoType,infoValue) => {
-  infoType = infoType.toLowerCase();
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  if(infoType === 'day') return days[infoValue];
-  if(infoType === 'month') return months[infoValue];
-
-}
 
 
 
@@ -142,6 +134,5 @@ export { SVGNS,
          buildElementTree,
          eventHandler, 
          buildIconButtonObj, 
-         createCustomSelectObj, 
-         dateHelper 
+         createCustomSelectObj,
       };

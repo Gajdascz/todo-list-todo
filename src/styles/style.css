@@ -57,13 +57,12 @@ button, a {
 button {
   display: flex;
   align-items: center;
-  justify-content: center;
+
   background: none;
   border: none;
   padding: 0;
   margin: 0;
 }
-
 ul {
   list-style: none;
 }
@@ -76,7 +75,7 @@ ul {
 
   --priority-urgent: #ff0000;
   --priority-high: #ff7b00;
-  --priority-medium: #ffc107;
+  --priority-medium: #977305;
   --priority-low: #198754;
   --priority-none: var(--primary-color);
 
@@ -200,10 +199,6 @@ input#search-bar:focus {
 
 
 
-
-
-
-
 /* Sidebar */
 /*#region*/
 section.sidebar {
@@ -244,29 +239,129 @@ section.sidebar {
 
 /*#endregion*/
 
-.common-group-container {
+.default-group-container {
   display: flex;
   flex-direction: column;
+  align-items: baseline;
+  justify-content: center;
   gap: .2em;
   padding-bottom: 1em;
   border-bottom: 2px solid var(--primary-color);
+  width: 100%;
 }
-.common-group-button{
-  padding: .15em;
-}
-.common-group {
-  display: flex;
-  justify-content: baseline;
-  align-items: stretch;
-  gap: .1em;
-  font-size: 1rem;
-}
-.common-group-icon {
-  width: 1.15em;
-}
-.common-group-chevron {
+.default-group-icon {
+  fill: var(--text-color);
   width: 1.25em;
+  padding-right: .15em;
 }
+h3.sidebar-group-title {
+  color: var(--text-color);
+}
+
+.default-group-button{
+  justify-content: baseline;
+  padding: .15em;
+  width: 100%;
+}
+
+.default-group-button:hover .default-group-icon,
+.default-group-button:hover h3.sidebar-group-title,
+.default-group-button:hover .sidebar-group-chevron {
+  color: var(--primary-color);
+  fill: var(--primary-color);
+}
+
+.sidebar-group-with-submenu {
+  position: relative;
+  width: 100%;
+}
+.sidebar-submenu-container {
+  top: 1.5em;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  border-radius: 10px;
+  color: var(--text-color);
+  width: 100%;
+  padding: .15em;
+
+}
+
+.sidebar-submenu-item {
+  width: 100%;
+  color: var(--text-color);
+}
+.sidebar-submenu-item:hover {
+  color: var(--primary-color);
+  background-color: var(--surface-color);
+  font-weight: bold;
+}
+
+.overdue-group-button:hover {
+  color: var(--priority-urgent);
+}
+.today-group-button:hover,
+.tomorrow-group-button:hover {
+  color: var(--priority-high);
+}
+.this-week-group-button:hover,
+.next-week-group-button:hover {
+  color: var(--priority-medium);
+}
+.this-month-group-button:hover,
+.next-month-group-button:hover {
+  color: var(--priority-low);
+}
+
+
+.sidebar-group-with-submenu.active {
+  background-color: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 5px;
+
+}
+.sidebar-group-with-submenu.active .sidebar-submenu-expand-button {
+  border-bottom: 2px solid var(--primary-color);
+}
+
+
+
+.sidebar-group-with-submenu.active .default-group-icon,
+.sidebar-group-with-submenu.active h3.sidebar-group-title {
+  color: var(--primary-color);
+  fill: var(--primary-color);
+}
+
+.sidebar-group-with-submenu.active .sidebar-group-chevron {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+  fill: var(--primary-color);
+}
+
+
+
+.sidebar-group-chevron {
+  width: 1.25em;
+  transform: rotate(0deg);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-urgent-button:hover {
+  color: var(--priority-urgent);
+}
+.sidebar-high-button:hover {
+  color: var(--priority-high);
+}
+.sidebar-medium-button:hover {
+  color: var(--priority-medium);
+}
+.sidebar-low-button:hover {
+  color: var(--priority-low);
+}
+.sidebar-none-button:hover {
+  color: var(--priority-none);
+}
+
 
 div.task-group-options {
   display: flex;
@@ -331,6 +426,9 @@ div.task-priority-circle {
   height: .5rem;
 }
 /*#endregion*/
+
+
+
 
 
 
@@ -465,6 +563,7 @@ p.task-card-timestamp {
 .task-card-show-all-icon-button {
   background-color: var(--divider-color);
   width: 100%;
+  justify-content: center;
 }
 .task-card-show-next-icon-button {
   border-bottom-left-radius: 8px;
@@ -588,6 +687,9 @@ footer a {
 /*#endregion*/
 
 
+
+/* Dialog Modals */
+/*#region*/
 
 /* Base Dialog Modal*/
 /*#region*/
@@ -839,6 +941,8 @@ button.task-dialog-form-submit-button:hover {
 
 /*#endregion*/
 
+
+/*#endregion*/
 
 
 /* Custom Select Styling */

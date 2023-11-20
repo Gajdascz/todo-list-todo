@@ -1,9 +1,8 @@
-import { buildBaseDialogElement } from "./buildBaseDialog";
-import { buildElementTree } from "../utility";
-import userStorage from "../processing/userStorage";
+import { buildBaseDialogElement } from "./baseDialog";
+import { buildElementTree } from "../../logic/utility/domHelperFunctions";
 
-export const buildWarningDialog = (warningMessage=null, taskID=null) => {
-  const baseDialog =  buildBaseDialogElement('Warning!');
+export const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
+  const warningDialogElement =  buildBaseDialogElement('Warning!');
   
   const warningMessageContainer = {
     type: 'div',
@@ -17,13 +16,12 @@ export const buildWarningDialog = (warningMessage=null, taskID=null) => {
     listeners: {
       'click' : [
         function (e) {
-          userStorage.get(taskID).card.deleteCard();
-          userStorage.remove(taskID)
+          if(confirmActionFn) confirmActionFn();
           document.querySelectorAll('dialog').forEach(dialog => {
             dialog.close();
             dialog.remove();
           })
-        }
+        },
       ]
     }
   };
@@ -49,7 +47,7 @@ export const buildWarningDialog = (warningMessage=null, taskID=null) => {
       cancelActionButton
     ]
   }
-  baseDialog.append(buildElementTree({
+  warningDialogElement.append(buildElementTree({
     type: 'div',
     attributes: {class: 'warning-dialog-container'},
     children: [
@@ -58,5 +56,5 @@ export const buildWarningDialog = (warningMessage=null, taskID=null) => {
     ]
   }))
 
-  return baseDialog;
+  return warningDialogElement;
 };

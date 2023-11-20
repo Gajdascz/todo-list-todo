@@ -1,10 +1,9 @@
-import { buildElementTree, eventHandler } from "../utility";
-import userStorage from "../processing/userStorage";
-import { renderEditTaskDialogForm } from "../render";
-import * as taskObjBuilder from "./taskObjDOMBuilders";
+import { buildElementTree, eventHandler } from "../../logic/utility/domHelperFunctions";
+import { renderEditTaskDialogForm } from "../../render";
+import * as taskObjBuilder from "../builders/taskObjDOMBuilders";
+import taskManager from "../../logic/tasks/taskManager";
 
-
-const TaskCard = (task) => {
+const taskCard = (task) => {
 
     /* Create Task Card Objects and Build Task Card Element */
     const taskCard = taskObjBuilder.taskCardObj(task.taskID);
@@ -57,8 +56,8 @@ const TaskCard = (task) => {
 
     /* Public - Exposed*/
     const toggleStatus = () => {
+      taskManager.toggleStatus(taskCardID);
       updateUIOnStatusChange();
-      userStorage.get(taskCardID).task.toggleStatus();
     };
     const updateUIOnStatusChange = () => {
       taskCardElement.classList.toggle('task-card-complete');
@@ -83,12 +82,12 @@ const TaskCard = (task) => {
 
     return {
       element: taskCardElement,
-      deleteCard,
-      updateUIOnEditSubmit,
+      delete: deleteCard,
+      update: updateUIOnEditSubmit,
       toggleStatus,
       get taskID() {return taskCardID },
     }
 }
 
 
-export default TaskCard;
+export default taskCard;

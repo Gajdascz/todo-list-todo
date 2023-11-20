@@ -5,8 +5,8 @@ html, :root, *, *::after, *::before {
 /* Preferred Default Font */
 @font-face {
   font-family: 'atkinson-hyper-legible';
-  src: url('../fonts/atkinsonhyperlegible-regular-webfont.woff2') format('woff2'),
-       url('../fonts/atkinsonhyperlegible-regular-webfont.woff') format('woff');
+  src: url('../assets/fonts/atkinsonhyperlegible-regular-webfont.woff2') format('woff2'),
+       url('../assets/fonts/atkinsonhyperlegible-regular-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,8 +14,8 @@ html, :root, *, *::after, *::before {
 /* Preferred Default Monospace Font */
 @font-face {
   font-family: 'fira-code';
-  src: url('../fonts/firacode-variablefont_wght-webfont.woff2') format('woff2'),
-       url('../fonts/firacode-variablefont_wght-webfont.woff') format('woff');
+  src: url('../assets/fonts/firacode-variablefont_wght-webfont.woff2') format('woff2'),
+       url('../assets/fonts/firacode-variablefont_wght-webfont.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
