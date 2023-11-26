@@ -10,7 +10,7 @@ const taskCard = (task) => {
     taskCard.children = [
       taskObjBuilder.taskPriorityIndicatorObj(task.priority, 'task-card', 'div'),
       taskObjBuilder.taskHeaderObj(task.title, 'task-card', 'h1',),
-      taskObjBuilder.taskDueObj(task.dueDate,task.dueTime, 'task-card'),
+      taskObjBuilder.taskDueObj(task.due, 'task-card'),
       taskObjBuilder.taskDescriptionObj(task.description, 'task-card'),
       taskObjBuilder.taskChecklistObj(task.subtasks, task.taskID, 'task-card'),
       taskObjBuilder.taskTimestampObj(task.timestamp, 'task-card'),
@@ -56,7 +56,7 @@ const taskCard = (task) => {
 
     /* Public - Exposed*/
     const toggleStatus = () => {
-      taskManager.toggleStatus(taskCardID);
+      taskManager.toggleTaskStatus(taskCardID);
       updateUIOnStatusChange();
     };
     const updateUIOnStatusChange = () => {
@@ -69,7 +69,7 @@ const taskCard = (task) => {
     const updateUIOnEditSubmit = (task) => {
       setPriority(task.priority);
       setTitle(task.title);
-      setDue(task.dueDate, task.dueTime);
+      setDue(task.due);
       setDescription(task.description);
       setChecklistSubtasks(task.subtasks, task.taskID);
     };

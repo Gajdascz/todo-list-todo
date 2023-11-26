@@ -1,4 +1,5 @@
 import { buildIconButtonObj } from "../../logic/utility/domHelperFunctions";
+import { formatDateForDisplay } from "../../logic/utility/dateHelperFunctions";
 
 /* Icon Path Defaults */
 //#region
@@ -60,19 +61,13 @@ const taskCompleteIconBtnObj = (path=circleCheckMarkPath, context='task-card') =
     section: context,
   });
 };
-const taskDueObj = (dueDate, dueTime, context='task-card', elementTag='p') => {
-  if(dueDate && dueTime){
+const taskDueObj = (due, context='task-card', elementTag='p') => {
+  if(due){
     return { type: elementTag, 
-             text: `${dueDate} by ${dueTime} UTC`, 
+             text: formatDateForDisplay(due), 
              attributes: { class: `${context}-due` } 
            };
   } 
-  if(dueDate && !dueTime) {
-    return { type: elementTag, 
-             text: `${dueDate}`, 
-             attributes: { class: `${context}-due` } 
-           };
-  }
 };
 const taskDescriptionObj = (description, context='task-card', elementTag='p') => {
   return { type: elementTag, 

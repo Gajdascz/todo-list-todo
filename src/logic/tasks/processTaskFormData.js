@@ -27,7 +27,7 @@ function processTaskFormData(fieldSelectors, task=null) {
         }
       }
   }
-  if(task) return taskManager.create(data);
+  if(!task) return taskManager.create(data);
   else return taskManager.update(task.taskID, data);
 };
 

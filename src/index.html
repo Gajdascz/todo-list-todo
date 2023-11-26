@@ -14,6 +14,12 @@
         </svg>
         <h3>New Task</h3>
       </button>
+      <button type="button" id="test-button">
+        <svg class="open-create-task-dialog-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M20 14H14V20H10V14H4V10H10V4H14V10H20V14Z" />
+        </svg>
+        <h3>TEST</h3>
+      </button>
     </div>
     <!-- <div class="search-container">
       <button type="submit" class="search-icon-button">
@@ -42,22 +48,29 @@
       </svg>
       <h1 class="sidebar-brand-name">T<span class="highlight-primary">L</span>T</h1>
     </div>
+    
+    <div class="home-group">
+      <button type="button" class="home-group-button" value="home">
+        <svg class="home-group-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+        </svg>
+        <h3 class="sidebar-group-title">Home</h3>
+      </button>
+    </div>
 
+    <div class="sidebar-hide-container-button-container">
+    <button id="sidebar-hide-group-container-button" class="sidebar-hide-group-container-button">
+      <svg class="sidebar-hide-group-container-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M7.41,18.41L6,17L12,11L18,17L16.59,18.41L12,13.83L7.41,18.41M7.41,12.41L6,11L12,5L18,11L16.59,12.41L12,7.83L7.41,12.41Z"></path>
+      </svg>
+      <div class="default-groups-button-text">Default Groups</div>
+    </button>
     <div class="default-group-container">
-      <div class="default-group">
-        <button type="button" class="default-group-button home-group-button">
-          <svg class="default-group-icon home-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
-          </svg>
-          <h3 class="sidebar-group-title">Home</h3>
-        </button>
-      </div>
-
 
 
 
         <div class="default-group sidebar-group-with-submenu">
-          <button type="button" class="default-group-button default-group-submenu-expand-button sidebar-submenu-expand-button due-group-button">
+          <button type="button" class="default-group-submenu-expand-button sidebar-submenu-expand-button">
             <svg class="default-group-icon due-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" />
             </svg>
@@ -67,24 +80,21 @@
             </svg>
           </button>
           <div class="default-group-submenu-container sidebar-submenu-container sidebar-submenu-container hide">
-              <button type="button" class="default-group-submenu-button sidebar-submenu-item  overdue-group-button"> Overdue </button>
-              <button type="button" class="default-group-button sidebar-submenu-item today-group-button"> Today </button>
-              <button type="button" class="default-group-button sidebar-submenu-item tomorrow-group-button"> Tomorrow </button>
-              <button type="button" class="default-group-button sidebar-submenu-item this-week-group-button"> This Week </button>
-              <button type="button" class="default-group-button sidebar-submenu-item next-week-group-button"> Next Week </button>
-              <button type="button" class="default-group-button sidebar-submenu-item this-month-group-button"> This Month </button>
-              <button type="button" class="default-group-button sidebar-submenu-item next-month-group-button"> Next Month </button>
-              <button type="button" class="default-group-button sidebar-submenu-item later-group-button"> Later </button>
-              <button type="button" class="default-group-button sidebar-submenu-item all-due-group-button"> All Due </button>
-              <button type="button" class="default-group-button sidebar-submenu-item no-due-group-button"> No Due </button>     
+              <button type="button" class="default-group-button sidebar-submenu-item all-due-group-button" value="due-all"> All Due </button>
+              <button type="button" class="default-group-submenu-button sidebar-submenu-item  overdue-group-button" value="due-overdue"> Overdue </button>
+              <button type="button" class="default-group-button sidebar-submenu-item today-group-button" value="due-today"> Today </button>
+              <button type="button" class="default-group-button sidebar-submenu-item tomorrow-group-button" value="due-tomorrow"> Tomorrow </button>
+              <button type="button" class="default-group-button sidebar-submenu-item this-week-group-button" value="due-this-week"> This Week </button>
+              <button type="button" class="default-group-button sidebar-submenu-item next-week-group-button" value="due-next-week"> Next Week </button>
+              <button type="button" class="default-group-button sidebar-submenu-item this-month-group-button" value="due-this-month"> This Month </button>
+              <button type="button" class="default-group-button sidebar-submenu-item next-month-group-button" value="due-next-month"> Next Month </button>
+              <button type="button" class="default-group-button sidebar-submenu-item later-group-button" value="due-later"> Later </button>
             </div>
-
-
 
 
         </div>
       <div class="default-group sidebar-group-with-submenu">
-        <button type="button" class="default-group-button default-group-submenu-expand-button sidebar-submenu-expand-button">
+        <button type="button" class="default-group-submenu-expand-button sidebar-submenu-expand-button">
           <svg class="default-group-icon priority-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M10 3H14V14H10V3M10 21V17H14V21H10Z" />
           </svg>
@@ -94,25 +104,30 @@
           </svg>
         </button>
         <div class="default-group-submenu-container sidebar-submenu-container sidebar-submenu-container hide">
-          <button type="button" class="default-group-submenu-button sidebar-submenu-item  sidebar-urgent-button"> Urgent </button>
-          <button type="button" class="default-group-button sidebar-submenu-item sidebar-high-button"> High </button>
-          <button type="button" class="default-group-button sidebar-submenu-item sidebar-medium-button"> Medium </button>
-          <button type="button" class="default-group-button sidebar-submenu-item sidebar-low-button"> Low </button>
-          <button type="button" class="default-group-button sidebar-submenu-item sidebar-none-button"> None </button>
+          <button type="button" class="default-group-submenu-button sidebar-submenu-item  urgent-group-button" value="priority-urgent"> Urgent </button>
+          <button type="button" class="default-group-button sidebar-submenu-item high-group-button" value="priority-high"> High </button>
+          <button type="button" class="default-group-button sidebar-submenu-item medium-group-button" value="priority-medium"> Medium </button>
+          <button type="button" class="default-group-button sidebar-submenu-item low-group-button" value="priority-low"> Low </button>
+          <button type="button" class="default-group-button sidebar-submenu-item none-group-button" value="priority-none"> None </button>
         </div>
       </div>
+
 
       <div class="default-group">
         <button type="button" class="default-group-button completed-group-button">
           <svg class="default-group-icon completed-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
           </svg>
-          <h3 class="sidebar-group-title">Completed</h3>
+          <h3 class="sidebar-group-title" value="complete">Completed</h3>
         </button>
       </div>
+
+
       </div>
     </div>
-    <!-- <div class="task-group-options">
+
+    </div>
+     <div class="task-group-options">
       <button class="add-task-group-button">
         <svg class="add-task-group-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M20 14H14V20H10V14H4V10H10V4H14V10H20V14Z" />
@@ -120,7 +135,7 @@
         <h3>New Group</h3>
       </button>
     </div>
-    <div class="task-group-container">
+    <!--<div class="task-group-container">
       <div class="task-group">
         <div class="task-group-header">
           <h3 class="task-group-title">Task Group Task Group Task Group</h3>

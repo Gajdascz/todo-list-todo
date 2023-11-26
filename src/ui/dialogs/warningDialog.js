@@ -1,7 +1,7 @@
 import { buildBaseDialogElement } from "./baseDialog";
 import { buildElementTree } from "../../logic/utility/domHelperFunctions";
 
-export const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
+const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   const warningDialogElement =  buildBaseDialogElement('Warning!');
   
   const warningMessageContainer = {
@@ -56,5 +56,7 @@ export const warningDialog = (warningMessage=null, taskID=null, confirmActionFn)
     ]
   }))
 
-  return warningDialogElement;
+  return { element: warningDialogElement };
 };
+
+export default warningDialog;

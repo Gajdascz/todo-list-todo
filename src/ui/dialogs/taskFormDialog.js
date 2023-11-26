@@ -2,25 +2,27 @@ import { buildElementTree, eventHandler } from '../../logic/utility/domHelperFun
 import { buildBaseDialogElement } from './baseDialog';
 import { processTaskFormData } from '../../logic/tasks/processTaskFormData'
 
-import * as taskFormObjBuilder from '../builders/taskFormObjDOMBuilders'
 import { renderDeleteWarningDialog } from '../../render';
 import taskManager from '../../logic/tasks/taskManager';
 
+import taskFormObjs from '../builders/taskFormObjs';
 
-const taskDialogForm = (type, task=null) =>  {
-  if(type.match(/new/i))  type = 'new-task';
-  else if(type.match(/edit/i)) type = 'edit-task';
+
+
+const taskDialogForm = (formContext, task=null) =>  {
+  if(formContext.match(/new/i))       formContext = 'new-task';
+  else if(formContext.match(/edit/i)) formContext = 'edit-task';
   else return;
   const taskDialogElement = buildBaseDialogElement(task ? 'Edit Task' : 'New Task');
-  const taskForm = taskFormObjBuilder.taskFormObj(type, 'dialog');
+  const taskForm = taskFormObjs.taskFormObj();
   taskForm.children = [
-    taskFormObjBuilder.formCustomPrioritySelectObj(task ? task.priority : null, 'dialog'),
-    taskFormObjBuilder.formTitleInputObj(task ? task.title : null, 'dialog'),
-    taskFormObjBuilder.formDueInputObj(task ? task.dueDate : null, task ? task.dueTime : null, 'dialog'),
-    taskFormObjBuilder.formDescriptionInputObj(task ? task.description : null, 'dialog'),
-    taskFormObjBuilder.formSubtaskInputObj('dialog'),,
-    taskFormObjBuilder.formSubtaskContainerObj(task ? task.subtasks : null, 'dialog'),
-    taskFormObjBuilder.formMainButtonContainerObj(type, 'dialog')
+    taskFormObjs.prioritySelectObj(task ? task.priority : null),
+    taskFormObjs.titleInputObj(task ? task.title : null),
+    taskFormObjs.dueInputObj(task ? task.due : null),
+    taskFormObjs.descriptionInputObj(task ? task.description : null),
+    taskFormObjs.subtaskInputObj(),
+    taskFormObjs.subtaskContainerObj(task ? task.subtasks : null),
+    taskFormObjs.mainButtonContainerObj(formContext)
   ];
 
   taskDialogElement.append(buildElementTree(taskForm));
@@ -28,10 +30,10 @@ const taskDialogForm = (type, task=null) =>  {
 
   const fieldSelectors = {
     priority:    `div.task-dialog-form-priority-selected-option`,
-    title:       `input.task-dialog-form-title-input`,
+    title:       `input.task-dialog-form-title-text-input`,
     dueDate:     `input.task-dialog-form-datepicker-input`,
     dueTime:     `input.task-dialog-form-timepicker-input`,
-    description: `textarea.task-dialog-form-description-input`,
+    description: `textarea.task-dialog-form-description-textarea-input`,
     subtasks:    [`p.task-dialog-form-subtask-entry-text`]
   };
 
@@ -41,19 +43,24 @@ const taskDialogForm = (type, task=null) =>  {
     taskDialogElement.close()
     taskDialogElement.remove();
   }
-
-  const selectDelete = (taskID) => {
-    renderDeleteWarningDialog(taskID, () => taskManager.delete(taskID));
+  const addSubtask = () => {
+    const subtaskContainer = taskDialogElement.querySelector(`.task-dialog-form-subtask-container`);
+    const textInput = taskDialogElement.querySelector(`.task-subtask-dialog-form-text-input`);
+    let text = textInput.value.trim();
+    let subtaskEntry;
+    if(text && text !== '') subtaskContainer.append(buildElementTree(taskFormObjs.subtaskEntryObj(text)))
+    textInput.value = '';
   }
+
+  const selectDelete = (taskID) => renderDeleteWarningDialog(taskID, () => taskManager.delete(taskID));
 
   eventHandler(taskDialogElement, '.task-dialog-form-submit-button', 'click', submitForm, task ? task: null);
 
-  if(type === 'edit-task') eventHandler(taskDialogElement, '.task-dialog-form-delete-button', 'click', selectDelete, task.taskID);
+  if(formContext === 'edit-task') eventHandler(taskDialogElement, '.task-dialog-form-delete-button', 'click', selectDelete, task.taskID);
 
+  eventHandler(taskDialogElement, '.task-subtask-dialog-form-text-input-button', 'click', addSubtask);
 
-  return {
-    element: taskDialogElement
-  }
+  return { element: taskDialogElement };
 
 }
 

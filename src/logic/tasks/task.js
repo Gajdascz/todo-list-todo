@@ -1,18 +1,17 @@
 const VALIDPRIORITIES  = ['urgent', 'high', 'medium', 'low', 'none'];
 
-const task = ( {priority='none', title='', dueDate=null, dueTime=null, description=null, subtasks=null, status=false} = {}) => {
+const task = ( {priority='none', title='', due=null, description=null, subtasks=null, status=false} = {}) => {
   function validatePriority(priority) {
     return VALIDPRIORITIES.includes(priority) ? priority : 'none';
   }
   
   let _priority = validatePriority(priority);
   let _title = title;
-  let _dueDate = dueDate;
-  let _dueTime = dueTime;
+  let _due = due;
   let _description = description;
   let _subtasks = subtasks;
   let _status = status;
-  const timestamp = new Date().toUTCString().replace('GMT','UTC');
+  const timestamp = `Created: ${new Date().toLocaleString()}`;
   const taskID = `${title.charAt(0)}${priority.charAt(0)}${title.slice(-1)}-${(Date.now()+(Date.now()*Math.round(Math.random()*100))).toString(36)}`.toUpperCase()
   const toggleStatus = () => {
     _status = !_status;
@@ -24,10 +23,8 @@ const task = ( {priority='none', title='', dueDate=null, dueTime=null, descripti
     },
     get title() { return _title; }, 
     set title(newTitle) { (_title = newTitle); },
-    get dueDate() { return _dueDate; },
-    set dueDate(newDueDate) { (_dueDate = newDueDate); },
-    get dueTime() { return _dueTime; },
-    set dueTime(newDueTime) { (_dueTime = newDueTime); },
+    get due() { return _due; },
+    set due(newDue) { (_due = newDue); },
     get description() { return _description; },
     set description(newDescription) { (_description = newDescription); },
     get subtasks() { return _subtasks; },

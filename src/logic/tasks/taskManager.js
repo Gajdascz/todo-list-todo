@@ -3,53 +3,62 @@ import groupManager from "../groups/groupManager";
 import task from "./task";
 import taskCard from "../../ui/tasks/taskCard";
 import { renderTaskCard } from "../../render";
+import { formatDateForTaskObj } from "../utility/dateHelperFunctions";
 
 const createTask = (taskData) => {
-  const newTask = task(
-    {
+  const newTask = task({
       priority:    taskData.priority.toLowerCase(),
       title:       taskData.title,
-      dueDate:     taskData.dueDate,
-      dueTime:     taskData.dueTime,
+      due:         taskData.dueDate ? formatDateForTaskObj(taskData.dueDate, taskData.dueTime ? taskData.dueTime : null) : null,
       description: taskData.description,
       subtasks:    taskData.subtasks
-    } 
-  );
+    });
   const newTaskCard = taskCard(newTask);
   userStorage.store(newTask.taskID, newTask, newTaskCard);
   renderTaskCard(newTaskCard);
 };
+
+
 const updateTask = (taskID, taskData) => {
-  const task = userStorage.getTask(taskID).task;
-  task.priority = taskData.priority.toLowerCase();
-  task.title = taskData.title;
-  task.dueDate = taskData.dueDate;
-  task.dueTime = taskData.dueTime;
+  const task       = userStorage.getTaskObj(taskID);
+  task.priority    = taskData.priority.toLowerCase();
+  task.title       = taskData.title;
+  task.due         = taskData.dueDate ? formatDateForTaskObj(taskData.dueDate, taskData.dueTime ? taskData.dueTime : null) : null;
   task.description = taskData.description;
-  task.subtasks = taskData.subtasks;
-  const taskCard = userStorage.getTask(task.taskID).card;
-  taskCard.updateUIOnEditSubmit(task);
+  task.subtasks    = taskData.subtasks;
+  const taskCard   = userStorage.getTaskCardObj(taskID);
+  taskCard.update(task);
+  groupManager.updateTaskDefaultGroups(task)
 };
+
 const deleteTask = (taskID) => {
-  const task = userStorage.getTask(taskID);
-  console.log(task.card)
-  task.card.delete();
-  userStorage.remove(task.taskID);
+  const task = userStorage.getTaskObj(taskID);
+  const card = userStorage.getTaskCardObj(taskID);
   groupManager.removeTaskFromAllGroups(task);
+  card.delete();
+  userStorage.remove(taskID);
 };
 
 
 const toggleTaskStatus = (taskID) => {
-  const task = userStorage.getTask(taskID).task;
+  const task = userStorage.getTaskObj(taskID);
   task.toggleStatus();
-}
+  groupManager.updateTaskDefaultGroups(task)
+};
 
+const getTask = (taskID) => userStorage.getTaskObj(taskID);
+const getTaskCard = (taskID) => userStorage.getTaskCardObj(taskID);
+
+const getTotalTasks = () => userStorage.getAllTaskObjs().length
 
 const taskManager = {
   create: createTask,
   update: updateTask,
   delete: deleteTask,
-  toggleStatus: toggleTaskStatus,
+  getTask,
+  getTaskCard,
+  toggleTaskStatus,
+  getTotalTasks
 }
 
 export default taskManager

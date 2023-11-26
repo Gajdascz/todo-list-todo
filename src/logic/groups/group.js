@@ -1,4 +1,5 @@
-const group = ((tasks=[]) => {
+const group = ((name=null,tasks=[]) => {
+  let _name = name
   let _tasks = tasks;
 
   const add = (task) => {
@@ -14,11 +15,15 @@ const group = ((tasks=[]) => {
   const inGroup = (taskID) => {
     return _tasks.some( (task) => task.taskID === taskID)
   };
+  const isGroup = () => true;
 
   return {
     get tasks() { return _tasks; },
+    get name() { return _name; },
     add,
     remove,
+    isGroup,
+    inGroup,
   }
 });
 

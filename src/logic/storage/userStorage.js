@@ -4,18 +4,21 @@ const userStorage = ((user='local') => {
   
   const store = (taskID, taskObj, taskCardObj) => storage.set(taskID, {task: taskObj, card: taskCardObj});  
   const remove = (taskID) => storage.delete(taskID);
-  const getTask = (taskID) => storage.get(taskID);
-  const getAllTasks = () => {
-    const tasks = [];
-    for(const value of storage.values()) tasks.push(value.task);
-    return tasks;
-  }
 
+  const getTaskObj = (taskID) => storage.get(taskID).task;
+  const getTaskCardObj = (taskID) => storage.get(taskID).card;
+  
+  const getAllTaskObjs = () => [...storage.values()].flatMap(taskStorageRef => taskStorageRef.task);
+  const getAllTaskCardObjs = () => [...storage.values()].flatMap(taskStorageRef => taskStorageRef.card);
+  const getAllTaskAndCardObjs = () => [...storage.values()];
 
   return { store,
            remove,
-           getTask,
-           getAllTasks,
+           getTaskObj,
+           getTaskCardObj,
+           getAllTaskObjs,
+           getAllTaskCardObjs,
+           getAllTaskAndCardObjs
          };
 })();
 

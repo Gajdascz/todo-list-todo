@@ -33,13 +33,13 @@ function buildElementTree({type, attributes={}, text=null, children=[], nameSpac
 
 const eventHandler = (element, selector, ev, fn, args=null) => {
   const eventHandler = element.querySelector(selector);
-  const argsHandler = (e) => {
+  const argsHandler = () => {
     if(Array.isArray(args)) {
-      fn(...args, e);
+      fn(...args);
     } else if (args) {
-      fn(args, e)
+      fn(args)
     } else {
-      fn(e)
+      fn()
     }
   }
   eventHandler.addEventListener(ev,argsHandler);
@@ -82,7 +82,7 @@ const createCustomSelectObj = ({section, options, value=null, identifier='dropdo
   options.forEach(option => {
     optionsObjArray.push({  type: 'div', 
                             text: option, 
-                            attributes: {class: option.toLowerCase()}, 
+                            attributes: { class: `${option.toLowerCase()} custom-select-element` }, 
                             listeners: { 'click' : [
                               (e) => {
                                 document.querySelector(`div.selected-option`).textContent = `${option}`;
