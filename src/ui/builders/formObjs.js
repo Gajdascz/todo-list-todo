@@ -11,10 +11,10 @@ const formObjs = (() => {
         class: `${context}-${formType}-form`}
     }
   };
-  const createInputContainerObj = (context, formType, descriptor) => {
+  const createContainerObj = (context, formType, descriptor) => {
     return {
       type: 'div',
-      attributes: { class: `${context}-${formType}-form-${descriptor}-container`},
+      attributes: { class: `${context}-${formType}-form-${descriptor}-container form-area-container`},
       children: []
     }
   };
@@ -46,7 +46,7 @@ const formObjs = (() => {
                 attributes: { type: 'text', 
                               id: id, 
                               name: id,
-                              class: `${context}-${formType}-form-${descriptor}-textarea-input form-textarea-input`,
+                              class: `${context}-${formType}-form-${descriptor}-textarea-input form-textarea-input-element`,
                               rows,
                               cols,
                               placeholder,
@@ -55,12 +55,12 @@ const formObjs = (() => {
               ]
             }
   };
-  const createButtonObj = (context, formType, value, descriptor,  btnTxt='') => {
+  const createButtonObj = (context, formType, value, descriptor,  btnTxt='', cautionBtn=false) => {
     return { type: 'button',
              text: btnTxt,
              attributes: {
               type: 'button',
-              class: `${context}-${formType}-form-${descriptor}-button`,
+              class: `${context}-${formType}-form-${descriptor}-button form-button-element ${cautionBtn ? 'form-caution-button' : ''}`,
               id: `${context}-${formType}-form-${descriptor}-button`,
               value
              }
@@ -68,7 +68,7 @@ const formObjs = (() => {
   };
   const createTextInputWithBtnObj = (context, formType, descriptor, placeholder='', btnTxt='+') => {
     return { type: 'div', 
-             attributes: {class: `${context}-${descriptor}-input-container`},
+             attributes: {class: `${context}-${descriptor}-input-container form-text-input-with-button-container`},
              children: [
               { type: 'label', 
                 attributes: { for: `${context}-${descriptor}-${formType}-text-input`},
@@ -76,7 +76,7 @@ const formObjs = (() => {
                   { type: 'input',
                     attributes: { 
                       type: 'text', 
-                      class: `${context}-${descriptor}-${formType}-form-text-input`, 
+                      class: `${context}-${descriptor}-${formType}-form-text-input form-text-input-with-button-text-input-element`, 
                       id: `${context}-${descriptor}-${formType}-form-text-input`, 
                       placeholder, 
                       maxlength: '18',
@@ -100,7 +100,7 @@ const formObjs = (() => {
                 text: btnTxt, 
                 attributes: {
                   type:'button', 
-                  class: `${context}-${descriptor}-${formType}-form-text-input-button`
+                  class: `${context}-${descriptor}-${formType}-form-text-input-button form-text-input-with-button-button-element`
                 },
               }
              ]
@@ -129,7 +129,7 @@ const formObjs = (() => {
                   attributes: { type: 'date', 
                                 id: id, 
                                 name: id,
-                                class: `${context}-${formType}-form-datepicker-input form-datepicker-input`,
+                                class: `${context}-${formType}-form-datepicker-input form-datepicker-input-element`,
                                 min,
                                 max,
                                 value: value ? value.formDate : null
@@ -147,7 +147,7 @@ const formObjs = (() => {
                 { type: 'input',
                   attributes: { type: 'time', 
                                 id, 
-                                class: `${context}-${formType}-form-timepicker-input form-timepicker-input`,
+                                class: `${context}-${formType}-form-timepicker-input form-timepicker-input-element`,
                                 min,
                                 max,
                                 value: value ? value.formTime : null
@@ -156,27 +156,20 @@ const formObjs = (() => {
               ]
            }
   };
-  const createRemovableTextObj = (context, formType, descriptor, value, btnTxt='-') => {
+  const createTextWithBtnObj = (context, formType, descriptor, value, btnAction, btnTxt) => {
     return {  type: 'div', 
-              attributes: {class: `${context}-${descriptor}-entry-container`},
+              attributes: {class: `${context}-${descriptor}-entry-container form-text-with-button-container`},
               children: [
                 { type: 'button', 
                   text: btnTxt, 
                   attributes: { 
                     type: 'button', 
-                    class: `${context}-${descriptor}-entry-delete-button`
-                  },
-                  listeners: {
-                    'click' : [
-                      function (e) {
-                        this.parentElement.remove();
-                      }
-                    ]
+                    class: `${context}-${descriptor}-entry-${btnAction}-button form-text-with-button-button-element`
                   }
                 },
                 { type: 'p', 
                   text: value, 
-                  attributes: { class: `${context}-${formType}-form-${descriptor}-entry-text`}},
+                  attributes: { class: `${context}-${formType}-form-${descriptor}-entry-text form-text-with-button-text-element`}},
               ]
            }
   };
@@ -185,12 +178,12 @@ const formObjs = (() => {
 
   return {
     formObj:              formObj,
-    inputContainerObj:    createInputContainerObj,
+    containerObj:    createContainerObj,
     textInputObj:         createTextInputObj,
     textAreaObj:          createTextAreaObj,
     buttonObj:            createButtonObj,
     textInputWithBtnObj:  createTextInputWithBtnObj,
-    removableTextObj:     createRemovableTextObj,
+    textWithBtnObj:       createTextWithBtnObj,
     prioritySelectObj:    createCustomPrioritySelectObj,
     datePickerObj:        createDatePickerObj,
     timePickerObj:        createTimePickerObj,

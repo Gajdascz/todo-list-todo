@@ -17,7 +17,7 @@ import { dateHelper, formatDateForDisplay, formatDateForTaskObj, getThisWeek } f
 
 import taskSort from './logic/utility/taskSort';
 
-import { renderGroupDialog } from './render';
+import { renderGroupsInterfaceDialog } from './render';
 
 
 const newTaskBtn = document.querySelector('button#open-create-task-dialog')
@@ -152,7 +152,7 @@ const testBtn = document.querySelector('button#test-button')
 
 
 testBtn.addEventListener('click', (e) => {
-  renderGroupDialog()
+  renderGroupsInterfaceDialog()
 })
 
 

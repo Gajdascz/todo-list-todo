@@ -47,8 +47,11 @@ const taskDialogForm = (formContext, task=null) =>  {
     const subtaskContainer = taskDialogElement.querySelector(`.task-dialog-form-subtask-container`);
     const textInput = taskDialogElement.querySelector(`.task-subtask-dialog-form-text-input`);
     let text = textInput.value.trim();
-    let subtaskEntry;
-    if(text && text !== '') subtaskContainer.append(buildElementTree(taskFormObjs.subtaskEntryObj(text)))
+    if(text && text !== '') {
+      const subtaskEntryElement = buildElementTree(taskFormObjs.subtaskEntryObj(text))
+      eventHandler(subtaskEntryElement,'button','click', () => subtaskEntryElement.remove())
+      subtaskContainer.append(subtaskEntryElement)
+    }
     textInput.value = '';
   }
 
@@ -59,7 +62,10 @@ const taskDialogForm = (formContext, task=null) =>  {
   if(formContext === 'edit-task') eventHandler(taskDialogElement, '.task-dialog-form-delete-button', 'click', selectDelete, task.taskID);
 
   eventHandler(taskDialogElement, '.task-subtask-dialog-form-text-input-button', 'click', addSubtask);
-
+  
+ taskDialogElement.querySelectorAll('.task-subtask-entry-delete-button').forEach(btn => btn.addEventListener('click', (e) => btn.parentElement.remove()));
+  
+  
   return { element: taskDialogElement };
 
 }

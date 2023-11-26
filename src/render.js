@@ -1,16 +1,13 @@
 import taskDialogForm from "../src/ui/dialogs/taskFormDialog";
 import warningDialog  from '../src/ui/dialogs/warningDialog';
-import groupDialog from "./ui/dialogs/groupDialog";
+import groupsInterfaceDialog from "./ui/dialogs/groupsInterfaceDialog";
 
 const taskCardContainer = document.querySelector('div.task-card-container')
 
-const renderTaskCard = (taskCard) => {
-  taskCardContainer.append(taskCard.element);
-}
+const renderTaskCard = (taskCard) => taskCardContainer.append(taskCard.element);
 
-const clearTaskCardContainer = () => {
-  taskCardContainer.querySelectorAll('.task-card').forEach(card => card.remove())
-};
+const clearTaskCardContainer = () => taskCardContainer.querySelectorAll('.task-card').forEach(card => card.remove())
+
 
 const renderNewTaskDialogForm = () => {
   const newTaskDialogForm = taskDialogForm('new');
@@ -30,10 +27,10 @@ const renderDeleteWarningDialog = (task, confirmActionFn) => {
   deleteWarningDialog.element.showModal();
 }
 
-const renderGroupDialog = () => {
-  const groupDialogElement = groupDialog().element;
-  document.body.append(groupDialogElement);
-  groupDialogElement.showModal()
+const renderGroupsInterfaceDialog = () => {
+  const groupsInterfaceDialogElement = groupsInterfaceDialog().element;
+  document.body.append(groupsInterfaceDialogElement);
+  groupsInterfaceDialogElement.showModal()
 }
 
 const renderCardArray = (groupCards) => {
@@ -56,5 +53,5 @@ export {  renderTaskCard,
           renderDeleteWarningDialog,
           renderCardArray,
           renderSortedCards,
-          renderGroupDialog
+          renderGroupsInterfaceDialog
        }

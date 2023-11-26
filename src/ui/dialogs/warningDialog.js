@@ -12,7 +12,7 @@ const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   const confirmActionButton = {
     type:'button',
     text: 'Confirm',
-    attributes: {class: 'warning-dialog-confirm-button', 'data-taskid': taskID},
+    attributes: {class: 'warning-dialog-confirm-button dialog-caution-button', 'data-taskid': taskID},
     listeners: {
       'click' : [
         function (e) {
@@ -28,7 +28,7 @@ const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   const cancelActionButton = {
     type:'button',
     text: 'Cancel',
-    attributes: {class: 'warning-dialog-cancel-button'},
+    attributes: {class: 'dialog-button-element'},
     listeners: {
       'click' : [
         function (e) {
@@ -41,7 +41,7 @@ const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   };
   const warningMessageButtonContainer = {
     type: 'div',
-    attributes: {class: 'warning-dialog-button-container'},
+    attributes: {class: 'warning-dialog-button-container dialog-area-container'},
     children: [
       confirmActionButton,
       cancelActionButton
@@ -49,7 +49,7 @@ const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   }
   warningDialogElement.append(buildElementTree({
     type: 'div',
-    attributes: {class: 'warning-dialog-container'},
+    attributes: {class: 'warning-dialog-container dialog-area-container'},
     children: [
       warningMessageContainer,
       warningMessageButtonContainer

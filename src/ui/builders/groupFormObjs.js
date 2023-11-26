@@ -1,38 +1,37 @@
-import { buildElementTree, createCustomSelectObj } from '../../logic/utility/domHelperFunctions';
+import { buildElementTree, createCustomSelectObj, eventHandler } from '../../logic/utility/domHelperFunctions';
 import { buildElementTre } from '../../logic/utility/domHelperFunctions';
+import formObjs from './formObjs';
 
 
-const newGroupInput = () => {
-  return { type: 'label',
-           attributes: {for: id},
-           children: [
-            { type: 'input',
-              attributes: { type: 'text',
-              id: id,
-              class: 'new-group-dialog-form-input',
-              placeholder,
-              required,
-              value: value ? value : ''
-              }
-            }
-           ]
+
+const groupsFormObjs = (() => {
+  const context  = 'groups';
+  const formType = 'dialog';
+
+  const groupsUIContainer = (uiTitle) => formObjs.containerObj(context,formType,uiTitle);
+
+  const groupNameInputObj = (groupName=null) => formObjs.textInputObj(context, formType, groupName, 'group-name', 'Group Name', true);
+
+  const tasksListContainerObj = () => formObjs.containerObj(context,formType,'all-tasks');
+
+  const taskListEntryObj = (taskID, taskTitle) => {
+    const taskListEntryObj = formObjs.textWithBtnObj(context,formType,'task',taskTitle,'add-to-group','+')
+    //eventHandler(taskListEntryObj,'button','click',)
+    taskListEntryObj.attributes['data-taskid'] = taskID;
+    return taskListEntryObj;
+  };
+
+  const submitButtonObj = () => formObjs.buttonObj(context,formType,'submit','submit','Submit');
+
+
+  return {
+    groupsUIContainer,
+    groupNameInputObj,
+    tasksListContainerObj,
+    taskListEntryObj,
+    submitButtonObj,
   }
-}
+})();
 
 
-const createTextInputObj = ({id, identifier, value=null, placeholder=null, required=false}) => {
-  return { type: 'label', 
-           attributes: {for: id}, 
-            children: [
-              { type: 'input', 
-                attributes: { type: 'text', 
-                              id: id, 
-                              class: `task-dialog-form-text-input task-dialog-form-${identifier}-input`, 
-                              placeholder,
-                              required,
-                              value: value ? value : ''
-                            }
-              }
-            ]
-          }
-};
+export default groupsFormObjs;

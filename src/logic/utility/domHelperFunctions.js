@@ -32,8 +32,8 @@ function buildElementTree({type, attributes={}, text=null, children=[], nameSpac
 
 
 const eventHandler = (element, selector, ev, fn, args=null) => {
-  const eventHandler = element.querySelector(selector);
-  const argsHandler = () => {
+  const targetElement = element.querySelector(selector);
+  targetElement.addEventListener((ev), function(e) {
     if(Array.isArray(args)) {
       fn(...args);
     } else if (args) {
@@ -41,9 +41,23 @@ const eventHandler = (element, selector, ev, fn, args=null) => {
     } else {
       fn()
     }
-  }
-  eventHandler.addEventListener(ev,argsHandler);
-}
+  })
+};
+
+ const scopedEventHandler = (element,selector,ev,fn,args=null) => {
+  const targetElement = element.querySelector(selector);
+  targetElement.addEventListener(ev, function(e) {
+    if(Array.isArray(args)) {
+      fn.apply(this, [e, ...args]);
+    } else if (args) {
+      fn.apply(this, [e, args]);
+    } else {
+      fn.call(this, e);
+    }
+  });
+};
+
+
 const buildIconButtonObj = ({iconPath, text=null, purpose='fun', type='button', viewBox="0 0 24 24", section=null, listeners={}} = {}) => {
   const baseClass = section ? `${section}-icon-button ${section}-${purpose}-icon-button` : `${purpose}-icon-button`;
   const svgClass = section ? `${section}-icon ${section}-${purpose}-icon` : `${purpose}-icon`;
@@ -73,7 +87,7 @@ const changeSelectedBackground = (newPriority) => {
     })
   }
   selectorHeader.classList.add(`priority-${newPriority}`);
-}
+};
 
 const createCustomSelectObj = ({section, options, value=null, identifier='dropdown', defaultSelectText=null}, menuIconPath=CHEVRONPATH) => {
   let priorityClass;
@@ -124,7 +138,7 @@ const createCustomSelectObj = ({section, options, value=null, identifier='dropdo
       }
     ]
   }
-}
+};
 
 
 
@@ -133,6 +147,7 @@ const createCustomSelectObj = ({section, options, value=null, identifier='dropdo
 export { SVGNS, 
          buildElementTree,
          eventHandler, 
+         scopedEventHandler,
          buildIconButtonObj, 
          createCustomSelectObj,
       };

@@ -49,8 +49,15 @@ const toggleTaskStatus = (taskID) => {
 const getTask = (taskID) => userStorage.getTaskObj(taskID);
 const getTaskCard = (taskID) => userStorage.getTaskCardObj(taskID);
 
-const getTotalTasks = () => userStorage.getAllTaskObjs().length
+const getTotalTasks = () => userStorage.getAllTaskObjs().length;
 
+const getAllTaskTitles = () => {
+  const titles = {};
+  userStorage.getAllTaskObjs().forEach(taskObj => {
+    titles[taskObj.taskID] = taskObj.title;
+  })
+  return titles;
+}
 const taskManager = {
   create: createTask,
   update: updateTask,
@@ -58,7 +65,8 @@ const taskManager = {
   getTask,
   getTaskCard,
   toggleTaskStatus,
-  getTotalTasks
+  getTotalTasks,
+  getAllTaskTitles
 }
 
 export default taskManager

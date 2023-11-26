@@ -51,7 +51,6 @@ const groupManager = (() => {
   /* Assigns task to it's relevant default groups */
   const assignTaskToDefaultGroups = (task) => {
     const defaultCollection = groupCollections.get('default');
-    console.log(defaultCollection)
     if(task.status) defaultCollection.complete.add(task);
     else {
       defaultCollection.all.add(task);
@@ -183,11 +182,8 @@ const groupManager = (() => {
     })
     const sortedTasks = taskSort.byDate(tasksInGroup);
     sortedTasks.forEach(task => taskCards.push(userStorage.getTaskCardObj(task.taskID)))
-    console.log(sortedTasks)
     return taskCards
   };
-
-
 
   return {
     init: initializeGroupCollections,

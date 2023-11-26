@@ -17,7 +17,7 @@ const taskFormObjs = (() => {
     return formObjs.textAreaObj(context, formType, taskDescription, 5, 30, 'description', `Task Description`);
   }
   const taskFormDueInputObj = (taskDue=null) => { 
-    const dueContainer = formObjs.inputContainerObj(context,formType,'due');
+    const dueContainer = formObjs.containerObj(context,formType,'due');
     dueContainer.children.push(formObjs.datePickerObj(context,formType,taskDue,'due-date'), formObjs.timePickerObj(context,formType,taskDue,'due-time'))
     return dueContainer
 
@@ -25,22 +25,22 @@ const taskFormObjs = (() => {
   const taskFormSubtaskInputObj = () => formObjs.textInputWithBtnObj(context, formType, 'subtask', 'Subtask');
   
   const taskFormSubtaskContainerObj = (subtaskValues=null) => {
-    const subtaskContainerObj = formObjs.inputContainerObj(context,formType,'subtask'); 
+    const subtaskContainerObj = formObjs.containerObj(context,formType,'subtask'); 
     const subtasks = [];
     if(subtaskValues) {
-      subtaskValues.forEach(subtask => subtasks.push(formObjs.removableTextObj(context, formType, 'subtask', subtask)))
+      subtaskValues.forEach(subtask => subtasks.push(formObjs.textWithBtnObj(context, formType, 'subtask', subtask,'delete','-')))
     }
     subtaskContainerObj.children = subtasks;
     return subtaskContainerObj;
   };
 
-  const taskFormSubtaskEntryObj = (subtask) => formObjs.removableTextObj(context,formType,'subtask', subtask)
+  const taskFormSubtaskEntryObj = (subtask) => formObjs.textWithBtnObj(context,formType,'subtask', subtask,'delete','-')
 
   const taskFormMainButtonContainerObj = (formContext=null) => {
-    const buttonContainerObj = formObjs.inputContainerObj(context,formType,'main-button'); 
+    const buttonContainerObj = formObjs.containerObj(context,formType,'main-button'); 
     const buttons = [];
     buttons.push(formObjs.buttonObj(context, formType, 'submit','submit','Submit'));
-    if(formContext.match(/edit/i)) buttons.push(formObjs.buttonObj(context, formType, 'delete','delete', 'Delete'));
+    if(formContext.match(/edit/i)) buttons.push(formObjs.buttonObj(context, formType, 'delete','delete', 'Delete', true));
     buttonContainerObj.children = buttons;
     return buttonContainerObj;
   };

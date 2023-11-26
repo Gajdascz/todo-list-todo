@@ -763,6 +763,137 @@ footer a {
 /* Dialog Modals */
 /*#region*/
 
+/* Universal Form and Dialog Styles */
+/*#region*/
+
+.dialog-area-container,
+.form-area-container {
+  display: flex;
+  gap: .5em;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.form-text-input-element{}
+
+.form-textarea-input-element {
+    resize: none;
+}
+
+.dialog-button-element,
+.form-button-element { 
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: var(--primary-color);
+}
+.dialog-button-element:hover,
+.form-button-element:hover {
+  background-color: var(--symbol-on-primary);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.dialog-caution-button,
+.form-caution-button {
+  background-color: red;
+  width: 100%;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+}
+.dialog-caution-button:hover,
+.form-caution-button:hover {
+  background-color: black;
+  color: red;
+  border-color: red;
+}
+
+.form-text-input-with-button-container {
+  display: flex;
+  border: 2px solid black;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+}
+form label,
+.form-text-input-with-button-text-input-element {
+  border: none;
+  width: 100%;
+}
+.form-text-input-with-button-text-input-element:focus {
+  outline: none;
+}
+
+.form-text-input-with-button-button-element {
+    border-left: 2px solid black;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    font-size: 2.2rem;
+    align-self: stretch;
+    background-color: var(--primary-color);
+}
+.form-text-input-with-button-button-element:hover {
+  background-color: var(--symbol-on-primary);
+  color: var(--primary-color);
+}
+
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator{
+  cursor: pointer;
+}
+.form-timepicker-input-element
+.form-datepicker-input-element {
+  width: 100%;
+  height: 2em;
+  cursor: text;
+}
+
+.form-text-with-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.25em;
+  border: 2px solid black;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.form-text-with-button-text-element{}
+
+.form-text-with-button-button-element{
+  padding: .2em;
+  background-color: var(--primary-color);
+  border-right: 2px solid black;
+  text-align: center;
+}
+.form-text-with-button-button-element:hover {
+  background-color: black;
+  color: var(--primary-color);
+}
+
+form input,
+form textarea {
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: .5em;
+  width: 100%;
+}
+
+.outline-toggle,
+form input:focus,
+form textarea:focus {
+  outline: 2px solid black;
+  border-radius: 5x;
+}
+/*#endregion*/
 
 /* Base Dialog Modal*/
 /*#region*/
@@ -793,24 +924,21 @@ footer a {
 .dialog-icon {
   width: 2em;
   height: 2em;
-  border: 3px solid black;
+  border: 3px solid var(--symbol-on-primary);
   background-color: var(--primary-color);
   border-radius: 10px;
 }
 .dialog-icon-button:hover .dialog-close-icon{
-  background-color: black;
+  background-color: var(--symbol-on-primary);
   fill: var(--primary-color);
   border-color: var(--primary-color);
 }
 /*#endregion*/
 
-
 /* Warning Dialog Modal */
 /*#region*/
 .warning-dialog-container {
-  display: flex;
   flex-direction: column;
-  gap: .75em;
 }
 .warning-dialog-message {
   font-size: 1.2rem;
@@ -819,39 +947,9 @@ footer a {
   width: 500px;
 }
 .warning-dialog-button-container {
-  display: flex;
   justify-content: center;
-  gap: 1em;
-}
-
-.warning-dialog-confirm-button {
-  background-color: red;
-  width: 25%;
-  border: 3px solid black;
-  border-radius: 5px;
-  padding: .5em;
-  font-weight: bold;
-}
-.warning-dialog-confirm-button:hover {
-  background-color: black;
-  color: red;
-  border-color: red;
-}
-.warning-dialog-cancel-button {
-  background-color: var(--primary-color);
-  width: 25%;
-  border: 3px solid black;
-  border-radius: 5px;
-  padding: .5em;
-  font-weight: bold;
-}
-.warning-dialog-cancel-button:hover {
-  background-color: black;
-  color: var(--primary-color);
-  border-color: var(--primary-color);
 }
 /*#endregion*/
-
 
 /* Task Dialog Form */
 /*#region*/
@@ -861,177 +959,23 @@ form.task-dialog-form {
   flex-direction: column;
   gap: .5em;
 }
-
-/* Task Due Inputs */
-/*#region*/
 .task-dialog-form-due-container {
-  display: flex;
   justify-content: space-between;
-  gap: .5em;
-  width: 100%;
 }
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="time"]::-webkit-calendar-picker-indicator{
-  cursor: pointer;
-}
-label[for="due-time"],
-.task-dialog-form-timepicker-input {
-  width: 100%;
-  height: 2em;
-  cursor: text;
-}
-label[for="due-date"],
-.task-dialog-form-datepicker-input {
-  width: 100%;
-  height: 2em;
-  cursor: text;
-}
-/*#endregion*/
-
-/* Task Description and General Styles */
-/*#region*/
-#task-dialog-form-description {
-  resize: none;
-}
-label[for="task-dialog-form-description"],
-textarea#task-dialog-form-description {
-  width: 100%;
-}
-.task-dialog-form-title-text-input,
-.task-dialog-form-description-textarea-input,
-.task-dialog-form-timepicker-input,
-.task-dialog-form-datepicker-input {
-  border: 2px solid black;
-  border-radius: 5px;
-  padding: .5em;
-  width: 100%;
-}
-.task-dialog-form-title-text-input:focus,
-.task-dialog-form-description-textarea-input:focus,
-.task-dialog-form-timepicker-input:focus,
-.task-dialog-form-datepicker-input:focus {
-  outline: 2px solid black;
-}
-.outline-toggle {
-  outline: 2px solid black;
-  border-radius: 5px;
-}
-/*#endregion*/
-
-
-/* Task Subtask(s) */
-/*#region*/
-.task-subtask-input-container {
-  display: flex;
-  border: 2px solid black;
-  border-radius: 5px;
+.task-dialog-form-main-button-container {
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-}
-label[for="task-subtask-dialog-text-input"],
-.task-subtask-dialog-form-text-input {
-  border: none;
-  padding: 0.25em;
-  width: 100%;
-}
-.task-subtask-dialog-form-text-input:focus {
-  outline: none;
-} 
-.task-subtask-dialog-form-text-input-button {
-  border-left: 2px solid black;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  font-size: 1.5rem;
-  padding: .25em;
-  background-color: var(--primary-color);
-}
-.task-subtask-dialog-form-text-input-button:hover {
-  background-color: var(--symbol-on-primary);
-  color: var(--primary-color);
+  gap: 0.2em;
 }
 .task-dialog-form-subtask-container {
-  display: flex;
   flex-direction: column;
-  gap: 0.2em;
-  font-size: 1rem;
-}
-.task-subtask-entry-container {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 0.25em;
-  border: 2px solid black;
-  border-radius: 5px;
-  text-align: center;
-}
-.task-dialog-form-subtask-entry-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.task-subtask-entry-delete-button {
-  padding: .25em;
-  background-color: var(--primary-color);
-  border-right: 2px solid black;
-  text-align: center;
-
-}
-.task-subtask-entry-delete-button:hover {
-  background-color: black;
-  color: var(--primary-color);
 }
 .task-subtask-entry-delete-button:hover + .task-dialog-form-subtask-entry-text {
   color: red;
 }
 /*#endregion*/
 
-/* Task Main Buttons (Submit,Delete) */
-/*#region*/
-.task-dialog-form-main-button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .5em;
-}
-.task-dialog-form-submit-button {
-  background-color: var(--primary-color);
-  width: 100%;
-  border: 3px solid black;
-  border-radius: 5px;
-  padding: .5em;
-  font-weight: bold;
-  justify-content: center;
-  align-items: center;
-}
-.task-dialog-form-submit-button:hover {
-  background-color: black;
-  color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-.task-dialog-form-delete-button {
-  background-color: red;
-  width: 75%;
-  border: 3px solid black;
-  border-radius: 5px;
-  padding: .5em;
-  font-weight: bold;
-  justify-content: center;
-  align-items: center;
-}
-.task-dialog-form-delete-button:hover {
-  background-color: black;
-  color: red;
-  border-color: red;
-}
-/*#endregion*/
 
-/*#endregion*/
-
-
-
-
-
-
-/* End: Dialog Modals */
 /*#endregion*/
 
 
