@@ -1,4 +1,4 @@
-import formObjs from './formObjs';
+import formObjs from '../general/formObjs';
 
 const taskFormObjs = (() => {
   const context  = 'task';

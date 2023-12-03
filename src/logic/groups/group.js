@@ -1,5 +1,5 @@
 const group = ((name=null,tasks=[]) => {
-  let _name = name
+  let _groupName = name
   let _tasks = tasks;
 
   const add = (task) => {
@@ -19,7 +19,8 @@ const group = ((name=null,tasks=[]) => {
 
   return {
     get tasks() { return _tasks; },
-    get name() { return _name; },
+    get groupName() { return _groupName; },
+    set groupName(newName) { _groupName = newName },
     add,
     remove,
     isGroup,

@@ -116,6 +116,7 @@ const checkDue = (task) => {
   const isLaterThanNextMonth = () => ( dueDate.getTime() > dateHelper.endOfNextMonth.getTime() );
 
   if(isOlderYear())       dueIn.push('overdue');
+  else if(isDueNextMonth() && ((dateHelper.today.getFullYear() + 1) === dueDate.getFullYear())) dueIn.push('nextMonth')
   else if(isLaterYear() || isLaterThanNextMonth())  dueIn.push('later');
   else if(isThisYear()) {
     if(isOverdue())       dueIn.push('overdue');
@@ -154,9 +155,24 @@ const formatDateForForm = (storedDate) => {
    }
 };
 
+const mimicFormInput = (date) => {
+  if(typeof date === 'string') date = new Date(date);
+  const pad = (num) => num < 10 ? '0' + num : num;
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  
+  return {date: `${year}-${month}-${day}`, time: `${hours}:${minutes}`}
+}
+
+
+
 export { dateHelper,
          checkDue, 
          formatDateForTaskObj, 
          formatDateForDisplay, 
          formatDateForForm,
+         mimicFormInput,
          }

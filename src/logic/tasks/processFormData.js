@@ -1,22 +1,18 @@
-import taskManager from './taskManager';
-
-
-
-function processTaskFormData(fieldSelectors, task=null) {
+function processFormData(fieldSelectors, obj=null) {
   const data = {};
   for(const [key,value] of Object.entries(fieldSelectors)) {
     if(Array.isArray(value)) {
       if(value.length === 0) {
         data[key] = null;
       } else {
-        const valueArray = [];
+        const values = {};
         value.forEach(element => {
           let valuesNodeList = document.querySelectorAll(element);
-          valuesNodeList.forEach(node => {
-            valueArray.push(node.textContent.trim())
+          valuesNodeList.forEach((node,iterator) => {
+            values[node.getAttribute('data-taskid') ?? iterator] = node.textContent.trim()
           })
         })
-        data[key] = valueArray; 
+        data[key] = values; 
       }
     } 
     else {
@@ -27,8 +23,7 @@ function processTaskFormData(fieldSelectors, task=null) {
         }
       }
   }
-  if(!task) return taskManager.create(data);
-  else return taskManager.update(task.taskID, data);
+  return obj ? {data, obj} : {data};
 };
 
-export { processTaskFormData };
+export { processFormData };

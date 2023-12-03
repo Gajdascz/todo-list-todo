@@ -5,6 +5,7 @@ const CHEVRONPATH = 'M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'
 
 // Recursively build DOM element tree 
 function buildElementTree({type, attributes={}, text=null, children=[], nameSpace=null, listeners={}} = {}) {
+  try {
   if((type === 'svg' || type === 'path') && !nameSpace) nameSpace = SVGNS;
   let element = nameSpace === null ? document.createElement(type) : document.createElementNS(nameSpace, type); 
   for(const [key, value] of Object.entries(attributes)) {
@@ -28,12 +29,18 @@ function buildElementTree({type, attributes={}, text=null, children=[], nameSpac
     });
   }
   return element;
+} catch (e) {
+  console.error(`Failed to build element: ${type}`, e);
+}
 };
 
 
-const eventHandler = (element, selector, ev, fn, args=null) => {
-  const targetElement = element.querySelector(selector);
+const eventHandler = (element, selector=null, ev, fn, args=null, preventDefault=false) => {
+  let targetElement;
+  if(selector) targetElement = element.querySelector(selector);
+  else targetElement = element;
   targetElement.addEventListener((ev), function(e) {
+    if(preventDefault) e.preventDefault();
     if(Array.isArray(args)) {
       fn(...args);
     } else if (args) {

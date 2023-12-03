@@ -1,6 +1,6 @@
 import { buildElementTree, eventHandler } from "../../logic/utility/domHelperFunctions";
 import { renderEditTaskDialogForm } from "../../render";
-import * as taskObjBuilder from "../builders/taskObjDOMBuilders";
+import * as taskObjBuilder from "../builders/tasks/taskObjDOMBuilders";
 import taskManager from "../../logic/tasks/taskManager";
 
 const taskCard = (task) => {
@@ -79,6 +79,9 @@ const taskCard = (task) => {
     /* Event Handler Assignment */
     eventHandler(taskCardElement, '.task-card-complete-icon-button', 'click', toggleStatus);
     eventHandler(taskCardElement, '.task-card-edit-icon-button', 'click', renderEditTaskDialogForm, task);
+
+    if(task.status) updateUIOnStatusChange();
+
 
     return {
       element: taskCardElement,

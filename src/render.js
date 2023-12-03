@@ -1,6 +1,6 @@
-import taskDialogForm from "../src/ui/dialogs/taskFormDialog";
-import warningDialog  from '../src/ui/dialogs/warningDialog';
-import groupsInterfaceDialog from "./ui/dialogs/groupsInterfaceDialog";
+import taskDialogForm from "./ui/dialogs/tasks/taskFormDialog";
+import warningDialog  from './ui/dialogs/general/warningDialog';
+import groupsInterfaceDialog from "./ui/dialogs/groupsUI/groupsInterfaceDialog";
 
 const taskCardContainer = document.querySelector('div.task-card-container')
 
@@ -27,10 +27,10 @@ const renderDeleteWarningDialog = (task, confirmActionFn) => {
   deleteWarningDialog.element.showModal();
 }
 
-const renderGroupsInterfaceDialog = () => {
-  const groupsInterfaceDialogElement = groupsInterfaceDialog().element;
-  document.body.append(groupsInterfaceDialogElement);
-  groupsInterfaceDialogElement.showModal()
+const renderClearMemoryWarningDialog = () => {
+  const clearMemoryWarningDialog = warningDialog('Proceed Thoughtfully! By clearing the applications memory you will be deleting ALL tasks and custom groups you\'ve created.',null,()=> {localStorage.clear(); location.reload();});
+  document.body.append(clearMemoryWarningDialog.element);
+  clearMemoryWarningDialog.element.showModal();
 }
 
 const renderCardArray = (groupCards) => {
@@ -47,11 +47,20 @@ const renderSortedCards = (sortedTaskCards) => {
   })
 }
 
+const renderGroupsInterfaceDialog = () => {
+  const groupsInterfaceDialogElement = groupsInterfaceDialog().element;
+  document.body.append(groupsInterfaceDialogElement);
+  groupsInterfaceDialogElement.showModal()
+}
+
+
 export {  renderTaskCard, 
           renderNewTaskDialogForm,
           renderEditTaskDialogForm,
           renderDeleteWarningDialog,
           renderCardArray,
           renderSortedCards,
-          renderGroupsInterfaceDialog
+
+          renderGroupsInterfaceDialog,
+          renderClearMemoryWarningDialog,
        }

@@ -1,11 +1,11 @@
-import { buildElementTree, eventHandler } from '../../logic/utility/domHelperFunctions';
-import { buildBaseDialogElement } from './baseDialog';
-import { processTaskFormData } from '../../logic/tasks/processTaskFormData'
+import { buildElementTree, eventHandler } from '../../../logic/utility/domHelperFunctions';
+import { buildBaseDialogElement } from '../general/baseDialog';
+import { processFormData } from '../../../logic/tasks/processFormData'
 
-import { renderDeleteWarningDialog } from '../../render';
-import taskManager from '../../logic/tasks/taskManager';
+import { renderDeleteWarningDialog } from '../../../render';
+import taskManager from '../../../logic/tasks/taskManager';
 
-import taskFormObjs from '../builders/taskFormObjs';
+import taskFormObjs from '../../builders/tasks/taskFormObjs';
 
 
 
@@ -38,7 +38,9 @@ const taskDialogForm = (formContext, task=null) =>  {
   };
 
   const submitForm = (task=null) => {
-    processTaskFormData(fieldSelectors, task ? task : null);
+    const data = processFormData(fieldSelectors, task ? task : null);
+    data.data.subtasks = Object.values(data.data.subtasks)
+    data.obj ? taskManager.update(data.obj.taskID, data.data) : taskManager.create(data.data)
     taskDialogElement.querySelector('form').reset();
     taskDialogElement.close()
     taskDialogElement.remove();

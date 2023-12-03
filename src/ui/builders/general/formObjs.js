@@ -1,14 +1,13 @@
 
-import { formatDateForForm } from "../../logic/utility/dateHelperFunctions";
-import { createCustomSelectObj } from "../../logic/utility/domHelperFunctions";
-
+import { formatDateForForm } from "../../../logic/utility/dateHelperFunctions";
+import { createCustomSelectObj } from "../../../logic/utility/domHelperFunctions";
 const formObjs = (() => {
-  const formObj = (context, formType) => {
+  const formObj = (context, formType ,identifier=null) => {
     return {
       type: 'form', 
       attributes: { 
-        name: `${context}-${formType}-form`,
-        class: `${context}-${formType}-form`}
+        name:  `${context}-${formType}-form${identifier ? '-'+identifier : ''}`,
+        class: `${context}-${formType}-form ${identifier ? context+'-'+formType+'-'+identifier+'-'+'form' : ''}`}
     }
   };
   const createContainerObj = (context, formType, descriptor) => {
@@ -18,7 +17,7 @@ const formObjs = (() => {
       children: []
     }
   };
-  const createTextInputObj = (context, formType, value, descriptor='', placeholder='', required=false) => {
+  const createTextInputObj = (context, formType, value, descriptor='', placeholder='', required=false, maxlength='50') => {
     const id = `${context}-${formType}-form-${descriptor}`;
     return { type: 'label', 
              attributes: {for: id}, 
@@ -30,7 +29,8 @@ const formObjs = (() => {
                                 class: `${context}-${formType}-form-${descriptor}-text-input form-text-input-element`, 
                                 placeholder,
                                 required,
-                                value: value ? value : ''
+                                value: value ? value : '',
+                                maxlength
                               }
                 }
               ]
@@ -60,7 +60,7 @@ const formObjs = (() => {
              text: btnTxt,
              attributes: {
               type: 'button',
-              class: `${context}-${formType}-form-${descriptor}-button form-button-element ${cautionBtn ? 'form-caution-button' : ''}`,
+              class: `button ${context}-${formType}-form-${descriptor}-button form-button-element ${cautionBtn ? 'form-caution-button' : ''}`,
               id: `${context}-${formType}-form-${descriptor}-button`,
               value
              }
@@ -178,7 +178,7 @@ const formObjs = (() => {
 
   return {
     formObj:              formObj,
-    containerObj:    createContainerObj,
+    containerObj:         createContainerObj,
     textInputObj:         createTextInputObj,
     textAreaObj:          createTextAreaObj,
     buttonObj:            createButtonObj,

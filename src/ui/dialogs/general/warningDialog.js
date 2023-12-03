@@ -1,5 +1,5 @@
 import { buildBaseDialogElement } from "./baseDialog";
-import { buildElementTree } from "../../logic/utility/domHelperFunctions";
+import { buildElementTree } from "../../../logic/utility/domHelperFunctions";
 
 const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   const warningDialogElement =  buildBaseDialogElement('Warning!');
@@ -28,7 +28,7 @@ const warningDialog = (warningMessage=null, taskID=null, confirmActionFn) => {
   const cancelActionButton = {
     type:'button',
     text: 'Cancel',
-    attributes: {class: 'dialog-button-element'},
+    attributes: {class: 'button dialog-button-element'},
     listeners: {
       'click' : [
         function (e) {

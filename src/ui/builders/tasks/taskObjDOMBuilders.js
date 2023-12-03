@@ -1,5 +1,5 @@
-import { buildIconButtonObj } from "../../logic/utility/domHelperFunctions";
-import { formatDateForDisplay } from "../../logic/utility/dateHelperFunctions";
+import { buildIconButtonObj } from "../../../logic/utility/domHelperFunctions";
+import { formatDateForDisplay } from "../../../logic/utility/dateHelperFunctions";
 
 /* Icon Path Defaults */
 //#region
