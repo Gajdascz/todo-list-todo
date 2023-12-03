@@ -11,7 +11,7 @@ const task = ( {priority='none', title='', due=null, description=null, subtasks=
   let _description = description;
   let _subtasks = subtasks;
   let _status = status;
-  const _timestamp = timestamp || `Created: ${new Date().toLocaleString()}`;
+  const _timestamp = timestamp || `${new Date().toLocaleString()}`;
   const _taskID =    taskID    || `${title.charAt(0)}${priority.charAt(0)}${title.slice(-1)}-${(Date.now()+(Date.now()*Math.round(Math.random()*100))).toString(36)}`.toUpperCase()
   const toggleStatus = () => _status = !_status;
   return {

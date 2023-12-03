@@ -123,7 +123,7 @@ const getRandomSubarray = (array,size) => {
 const generateGroups = () => {
   const allTasks = taskManager.getAllTaskObjs();
   groupManager.createUserGroup(`${randomPicker(adjective)}${randomPicker(noun)}`,[...allTasks].map(task=>task.taskID));
-  for(let i = 0; i < 3; i++) {
+  for(let i = 0; i < 2; i++) {
     const randomSize = getRandomNumber(allTasks.length);
     const randTasks = getRandomSubarray(allTasks, randomSize).map(task => task.taskID);
     groupManager.createUserGroup(`${randomPicker(adjective)}${randomPicker(noun)}`,randTasks);

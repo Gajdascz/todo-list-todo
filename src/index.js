@@ -52,4 +52,8 @@ const initWrapper = () => {
 
 initWrapper();
 
+if(localStorage.length === 0) {
+   initDemo()
+   groupManager.init();
+}
 
