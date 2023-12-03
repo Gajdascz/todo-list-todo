@@ -156,9 +156,17 @@ button#open-create-task-dialog:hover .open-create-task-dialog-icon {
   outline: 2px solid var(--primary-color);
   width: fit-content;
 }
+.clear-memory-button {
+  border-bottom: 2px solid var(--primary-color);
+}
+
 .clear-memory-button:hover {
   background-color: var(--symbol-on-primary);
   color: red;
+}
+.refresh-demo-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
 }
 
 /*#endregion*/

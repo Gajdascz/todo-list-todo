@@ -1,7 +1,7 @@
 import './styles/normalize.css';
 import './styles/style.css';
 
-import { renderNewTaskDialogForm, renderCardArray, renderClearMemoryWarningDialog } from './render';
+import { renderNewTaskDialogForm, renderCardArray, renderClearMemoryWarningDialog, renderRefreshDemoWarningDialog } from './render';
 
 
 import groupManager from './logic/groups/groupManager';
@@ -18,7 +18,7 @@ const newTaskBtn = document.querySelector('button#open-create-task-dialog')
 
 const settingsBtn = document.querySelector('button.settings-icon-button');
 const clearMemBtn = document.querySelector('button.clear-memory-button');
-const changeColorThemeBtn = document.querySelector('button.change-color-theme-button')
+const refreshDemoBtn = document.querySelector('button.refresh-demo-button')
 settingsBtn.addEventListener('click', function (e) {
   this.nextElementSibling.classList.toggle('hide');
 });
@@ -26,6 +26,10 @@ settingsBtn.addEventListener('click', function (e) {
 clearMemBtn.addEventListener('click', function (e) {
   renderClearMemoryWarningDialog();
 });
+
+refreshDemoBtn.addEventListener('click', function (e) {
+  renderRefreshDemoWarningDialog();
+})
 
 
 

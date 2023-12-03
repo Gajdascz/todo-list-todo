@@ -28,10 +28,16 @@ const renderDeleteWarningDialog = (task, confirmActionFn) => {
 }
 
 const renderClearMemoryWarningDialog = () => {
-  const clearMemoryWarningDialog = warningDialog('Proceed Thoughtfully! By clearing the applications memory you will be deleting ALL tasks and custom groups you\'ve created.',null,()=> {localStorage.clear(); location.reload();});
+  const clearMemoryWarningDialog = warningDialog('Proceed Thoughtfully! By clearing the applications memory you will be deleting ALL tasks and custom groups you\'ve created.',null,()=> {localStorage.clear(); localStorage.setItem('holder','_'); location.reload(); });
   document.body.append(clearMemoryWarningDialog.element);
   clearMemoryWarningDialog.element.showModal();
 }
+const renderRefreshDemoWarningDialog = () => {
+  const refreshDemoWarningDialog = warningDialog('Refreshing the demo will erase ALL current local memory and refresh the page.',null, () => {localStorage.clear(); location.reload();});
+  document.body.append(refreshDemoWarningDialog.element);
+  refreshDemoWarningDialog.element.showModal();
+}
+
 
 const renderCardArray = (groupCards) => {
   clearTaskCardContainer()
@@ -63,4 +69,5 @@ export {  renderTaskCard,
 
           renderGroupsInterfaceDialog,
           renderClearMemoryWarningDialog,
+          renderRefreshDemoWarningDialog,
        }
