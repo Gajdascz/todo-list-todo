@@ -1,5 +1,5 @@
 # TodoListTodo
-TodoListTodo is a task management web application designed to enhance personal and professional productivity. Developed as part of The Odin Project, this project serves as a practical introduction to JavaScript's localStorage API and the implementation of various JavaScript ES6 features, modules, array methods, and more.
+TodoListTodo is a task management web application created primarly as a learning experience. Developed as part of The Odin Project, this project serves as a practical introduction to JavaScript's localStorage API and the implementation of various JavaScript ES6 features, modules, array methods, and more.
 - **Live Preview**: https://gajdascz.github.io/todo-list-todo/
 - **Project Page**: [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-todo-list)
 
