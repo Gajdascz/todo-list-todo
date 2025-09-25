@@ -1,6 +1,6 @@
 # TodoListTodo
 
-TodoListTodo is a task management web application created primarily as a learning experience.
+TodoListTodo is a task management web application.
 
 - **Live Preview**: https://gajdascz.github.io/todo-list-todo/
 
